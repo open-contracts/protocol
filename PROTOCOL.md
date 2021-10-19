@@ -1,6 +1,6 @@
 The protocol can be summarized by the following flow chart:
 
-```
+```ascii
              TLS-over-TLS
              based on pubkey
              in attestation                      
