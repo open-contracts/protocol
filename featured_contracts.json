@@ -1,6 +1,7 @@
 {
   "disclaimer": "We did not perform a security review on any of these contracts.",
   "featured": {
-     "Sample Contract": "https://github.com/open-contracts/sample-contract"
+     "Sample Contract": "https://github.com/open-contracts/sample-contract",
+     "Weather Insurace": "https://github.com/open-contracts/weather-insurance"
   }
 }
