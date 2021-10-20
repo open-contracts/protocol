@@ -3,7 +3,7 @@
   "featured": {
      "Sample Contract": "https://github.com/open-contracts/sample-contract",
      "Weather Insurace": "https://github.com/open-contracts/weather-insurance",
-     "TradFi Swap": "https://github.com/open-contracts/tradfi-swap",
+     "Fiat Swap": "https://github.com/open-contracts/fiat-swap",
      "Reforestation Commitments": "https://github.com/open-contracts/reforestation-commitments"
   }
 }
