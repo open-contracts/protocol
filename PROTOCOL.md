@@ -16,13 +16,13 @@ The protocol can be summarized by the following flow chart:
 │         │ Calldata, Signatures │             │
 └─────────┘ ── ── ── ── ── ── ── └─────────────┘ ◄──────────────────┐ If valid:
        │                                │                           │
-       │                                │                           │ signature over 
-       │ $OPN payment                   │attestation                │ {Oracle Enclave pubkey, Oracle Provider}
+       │                                │attestation                │ signature over 
+       │ $OPN payment                   │CSR (=cert sign request)   │ {Oracle Enclave pubkey, Oracle Provider}
        │                                │                           │
        │ Oracle Enclave pubkey          ▼                           │  SSL cert
        │ Oracle Provider           ┌─────────┐                     ┌──────────┐
        │(Signed by registry)       │Oracle   │ ─────────────────►  │ Registry │
-       │                           │Provider │ attestation         │ Enclave  │
+       │                           │Provider │ attestation, CSR    │ Enclave  │
        │ Calldata                  │(on EC2) │ + provider address  └──────────┘
        │ (Signed by Oracle)        └─────────┘
        │                                 ▲
