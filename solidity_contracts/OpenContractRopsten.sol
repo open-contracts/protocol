@@ -3,15 +3,15 @@ pragma solidity >=0.8.0;
 contract OpenContractAlpha {
     address _forwarder = 0x9dAe5581fAf4a2C11150D8302D80D4009d2DFDa9;
     address _devs;
-    bool public _completed;
+    bool _completed;
     mapping(bytes4 => bytes32) _allowedHash;
     
     constructor() {
         _devs = msg.sender;
     }
     
-    function  _complete() public {
-        require(!_completed, "Development is already completed.");
+    function  _complete_oracles() public {
+        require(!_completed, "Oracle development is already completed.");
         require(msg.sender == _devs, "Only the devs can complete the development");
         _completed = true;
     }
