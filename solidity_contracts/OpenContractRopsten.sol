@@ -11,7 +11,7 @@ contract OpenContractAlpha {
     }
     
     function  _complete() public {
-        require(msg.sender == _devs, "Only dev can complete the development");
+        require(msg.sender == _devs, "Only the devs can complete the development");
         _completed = true;
     }
     
