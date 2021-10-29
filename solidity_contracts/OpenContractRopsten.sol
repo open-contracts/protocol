@@ -4,7 +4,7 @@ contract OpenContractAlpha {
     address _forwarder = 0x9dAe5581fAf4a2C11150D8302D80D4009d2DFDa9;
     address _devs;
     bool public _completed;
-    mapping(bytes4 => bytes32) _allowedHash;
+    mapping(bytes4 => bytes32) public _allowedHash;
     
     constructor() {
         _devs = msg.sender;
