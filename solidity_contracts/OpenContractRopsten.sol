@@ -17,7 +17,7 @@ contract OpenContractAlpha {
     }
     
     modifier _oracle(bytes32 oracleHash, address msgSender, bytes4 selector) {
-        require(msg.sender == _forwarder, "Call has to be relayed by Open Contracts Hub.");
+        require(msg.sender == _forwarder, "Call has to be relayed via Open Contracts Hub.");
         if (_completed) {
             require(oracleHash == _allowedHash[selector], "Incorrect Oracle Hash.");
         } else if (msgSender == _devs) {
