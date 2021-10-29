@@ -11,6 +11,7 @@ contract OpenContractAlpha {
     }
     
     function  _complete() public {
+        require(!_completed, "Development is already completed.");
         require(msg.sender == _devs, "Only the devs can complete the development");
         _completed = true;
     }
