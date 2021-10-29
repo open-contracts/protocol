@@ -1,12 +1,29 @@
 pragma solidity >=0.8.0;
 
 contract OpenContractAlpha {
-    address forwarder = 0x9dAe5581fAf4a2C11150D8302D80D4009d2DFDa9;
+    address _forwarder = 0x9dAe5581fAf4a2C11150D8302D80D4009d2DFDa9;
+    address _devs;
+    bool public _completed;
+    mapping(bytes4 => bytes32) _allowedHash;
     
-    modifier onlyOracle(bytes32 oracleHash, bytes32 allowedHash) {
-        require(oracleHash == allowedHash, "Incorrect Oracle Hash.");
-        require(msg.sender == forwarder, "Call has to be relayed by Open Contracts Hub.");
-        _;
+    constructor() {
+        _devs = msg.sender;
     }
     
+    function  _complete() public {
+        require(msg.sender == _devs, "Only dev can complete the development");
+        _completed = true;
+    }
+    
+    modifier _oracle(bytes32 oracleHash, address msgSender, bytes4 selector) {
+        require(msg.sender == _forwarder, "Call has to be relayed by Open Contracts Hub.");
+        if (_completed) {
+            require(oracleHash == _allowedHash[selector], "Incorrect Oracle Hash.");
+        } else if (msgSender == _devs) {
+            _allowedHash[selector] = oracleHash;
+        } else {
+            revert("The devs are still updating the oracles. Only they can call this function for now.");
+        }
+        _;
+    }
 }
