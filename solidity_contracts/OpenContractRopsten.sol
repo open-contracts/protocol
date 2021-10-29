@@ -12,7 +12,7 @@ contract OpenContractAlpha {
     
     function  _complete_oracles() public {
         require(!_completed, "Oracle development is already completed.");
-        require(msg.sender == _devs, "Only the devs can complete the development");
+        require(msg.sender == _devs, "Only the devs can complete the development.");
         _completed = true;
     }
     
