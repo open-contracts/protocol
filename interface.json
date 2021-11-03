@@ -1,0 +1,18 @@
+{
+      "name": "Open Contracts Forwarder"
+      "network": "ropsten",
+      "address": "0x9dAe5581fAf4a2C11150D8302D80D4009d2DFDa9",
+      "abi": [{"inputs": [], "stateMutability": "nonpayable", "type": "constructor"},
+              {"inputs": [], "name": "devAddress", 
+	       "outputs": [{"internalType": "address", "name": "", "type": "address"}], "stateMutability": "view", "type": "function"},
+              {"inputs": [{"internalType": "address payable", "name": "destinationContract", "type": "address"}, 
+                          {"internalType": "bytes", "name": "call", "type": "bytes"}],
+               "name": "forwardCall", "outputs": [{"internalType": "bool", "name": "", "type": "bool"}, {"internalType": "bytes", "name": "", "type": "bytes"}], 
+               "stateMutability": "payable", "type": "function"},
+              {"inputs": [], "name": "frozen", "outputs": [{"internalType": "bool", "name": "", "type": "bool"}], "stateMutability": "view", "type": "function"},
+              {"inputs": [], "name": "hub", "outputs": [{"internalType": "address", "name": "", "type": "address"}], "stateMutability": "view", "type": "function"},
+              {"inputs": [{"internalType": "address", "name": "newHub",	"type": "address"},
+                          {"internalType": "address", "name": "newDevAddress", "type": "address"},
+                          {"internalType": "bool", "name": "freeze", "type": "bool"}],
+               "name": "update", "outputs": [], "stateMutability": "nonpayable", "type": "function"}]
+}
