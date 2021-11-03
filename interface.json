@@ -34,5 +34,5 @@
 		   	                     {"internalType": "address", "name": "newDevs", "type": "address"},
 		   	                     {"internalType": "bool", "name": "close", "type": "bool"},
 		   	                     {"internalType": "uint256", "name": "newPrice", "type": "uint256"}],
-		              "name": "backdoor", "outputs": [], "stateMutability": "nonpayable", "type": "function"}]
+		  "name": "backdoor", "outputs": [], "stateMutability": "nonpayable", "type": "function"}]
 }
