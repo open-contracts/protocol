@@ -1,6 +1,5 @@
-{
-  "name": "Open Contracts Hub",
-  "network": "ropsten",
+{"network": "ropsten",{
+        "name": "Open Contracts Hub",
         "address": "0x7e1a347B91ae33ee0c85014194eC5f78F72408E0",
         "abi" : [{"inputs": [{"internalType": "address", "name": "newEnclave", "type": "address"},
                              {"internalType": "address payable", "name": "newProvider",	"type": "address"},
@@ -35,4 +34,5 @@
 		   	                     {"internalType": "bool", "name": "close", "type": "bool"},
 		   	                     {"internalType": "uint256", "name": "newPrice", "type": "uint256"}],
 		  "name": "backdoor", "outputs": [], "stateMutability": "nonpayable", "type": "function"}]
+}
 }
