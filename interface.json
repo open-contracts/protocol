@@ -1,4 +1,4 @@
-{"network": "ropsten",{
+{"ropsten":{
         "name": "Open Contracts Hub",
         "address": "0x7e1a347B91ae33ee0c85014194eC5f78F72408E0",
         "abi" : [{"inputs": [{"internalType": "address", "name": "newEnclave", "type": "address"},
