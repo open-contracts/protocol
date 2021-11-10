@@ -1,6 +1,6 @@
 {"ropsten":{
         "name": "Open Contracts Hub",
-        "address": "0x0fF88fFf22AE8363884f1137e64aDa760d974b0F",
+        "address": "0x19A9d2Ddde2a8E9f681c47aefA3Eaa19Aa5aB9FC",
         "abi" : [
 	{
 		"inputs": [],
