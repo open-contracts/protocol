@@ -21,7 +21,7 @@ contract OpenContractAlpha {
         if (_completed) {
             require(oracleHash == _allowedOracle[selector], "Incorrect Oracle Hash.");
         } else if (msgSender == _devs) {
-            _allowedHash[selector] = oracleHash;
+            _allowedOracle[selector] = oracleHash;
         } else {
             revert("The devs are still updating the oracles. Only they can call this function for now.");
         }
