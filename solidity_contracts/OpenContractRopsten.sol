@@ -1,7 +1,7 @@
 pragma solidity >=0.8.0;
 
 contract OpenContractAlpha {
-    address _forwarder = 0xACf12733cBa963201Fdd1757b4D7A062AD096dB1;
+    address _forwarder = 0xACf12733cBa963201Fdd1757b4D7A062AD096dB1;
     address _devs;
     bool public _completed;
     mapping(bytes4 => bytes32) public _allowedOracle;
@@ -23,7 +23,7 @@ contract OpenContractAlpha {
         } else if (msgSender == _devs) {
             _allowedOracle[selector] = oracleHash;
         } else {
-            revert("The devs are still updating the oracles. Only they can call this function for now.");
+            revert("The devs are still completing the oracles. Only they can call this function for now.");
         }
         _;
     }
