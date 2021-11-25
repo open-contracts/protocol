@@ -1,27 +1,17 @@
 pragma solidity >=0.8.0;
 
-contract OpenContractAlpha {
-    address _forwarder = 0xACf12733cBa963201Fdd1757b4D7A062AD096dB1;
-    address _devs;
-    bool public _completed;
-    mapping(bytes4 => bytes32) public _allowedOracle;
-    
-    constructor() {
-        _devs = msg.sender;
+contract OpenContract {
+    address private hub = 0xACf12733cBa963201Fdd1757b4D7A062AD096dB1;
+    mapping(bytes8 => bytes32) private allowedID;
+ 
+    function setOracle(bytes8 functionSelector, bytes32 oracleID) internal {
+        allowedID[functionSelector] = oracleID;
     }
-    
-    function  _complete_oracles() public {
-        require(!_completed, "Oracle development is already completed.");
-        require(msg.sender == _devs, "Only the devs can complete the development.");
-        _completed = true;
-    }
-    
-    modifier _oracle(bytes32 oracleHash, address msgSender, bytes4 selector) {
-        require(msg.sender == _forwarder, "Call has to be relayed via Open Contracts Hub.");
-        if (_completed) {
-            require(oracleHash == _allowedOracle[selector], "Incorrect Oracle Hash.");
-        } else if (msgSender == _devs) {
-            _allowedOracle[selector] = oracleHash;
+ 
+    modifier checkOracle(bytes32 oracleID, bytes4 selector) {
+        require(msg.sender == hub, "Can only be called via Open Contracts Hub.");
+        if (allowedID[selector] != bytes32("any")) {
+            require(oracleID == allowedID[selector], "Incorrect OracleID.");
         }
         _;
     }
