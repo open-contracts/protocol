@@ -10,7 +10,7 @@ contract OpenContract {
  
     modifier checkOracle(bytes32 oracleID, bytes4 selector) {
         require(msg.sender == hub, "Can only be called via Open Contracts Hub.");
-        if (allowedID[selector] != bytes32("any")) {
+        if (allowedID[selector] != "any") {
             require(oracleID == allowedID[selector], "Incorrect OracleID.");
         }
         _;
