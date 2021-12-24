@@ -1,2 +1,2 @@
 # protocol
-The full codebase for the Open Contracts protocol, bringing https to Ethereum smart contracts.
+The full codebase for the Open Contracts protocol, bringing interactive oracles to smart contracts.
