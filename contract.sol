@@ -51,9 +51,9 @@ contract OpenContractsHub {
         
         // send payments to the recipients 
         require(OPN.allowance(msg.sender, address(this)) >= price, "Sender needs to deposit enough $OPN");
-        OPN.transferFrom(msg.sender, 0x000000000000000000000000000000000000dEaD, price/10);  // 10 % burned
+        OPN.transferFrom(msg.sender, 0x000000000000000000000000000000000000dEaD, price/5);   // 20 % burned
         OPN.transferFrom(msg.sender, payable(enclaveProvider[registryEnclave]), price/10);   // 10 % to registry
-        OPN.transferFrom(msg.sender, oracleProvider, price - price/5);                       // 80 % to oracle
+        OPN.transferFrom(msg.sender, oracleProvider, price/10*7);                            // 70 % to oracle
         
         // call destination contract
         require(!calledAlready[oracleMsgHash], "Calls can only be submitted once.");
