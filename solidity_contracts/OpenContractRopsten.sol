@@ -5,7 +5,7 @@ contract OpenContract {
     mapping(bytes8 => bytes32) private allowedID;
  
     function setOracle(bytes8 selector, bytes32 oracleID) internal {
-        allowedID[functionSelector] = oracleID;
+        allowedID[selector] = oracleID;
     }
  
     modifier checkOracle(bytes4 selector, bytes32 oracleID) {
