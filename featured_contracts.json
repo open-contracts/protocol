@@ -1,7 +1,7 @@
 {
   "disclaimer": "We did not perform a security review on any of these contracts.",
   "featured": {
-     "Pay a Twitter Account": "https://github.com/open-contracts/pay-a-twitter",
+     "Pay a Twitter Account": "https://github.com/open-contracts/pay-a-twitter-account",
      "Weather Insurace": "https://github.com/open-contracts/weather-insurance",
      "Fiat Swap": "https://github.com/open-contracts/fiat-swap",
      "Reforestation Commitments": "https://github.com/open-contracts/reforestation-commitments",
