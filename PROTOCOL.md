@@ -16,7 +16,7 @@ Yes, in a key way it's not, because we trust AWS's most secure instance type. Bu
 To make that case, let's imagine the best-case scenario that achieves what our protocol does: allow you to prove to a smart contract, for example that you made a certain online payment to another user of "FiatPay.com" (think Venmo, PayPal, Cash App, Zelle...). In the best case scenario, the smart contract could directly visit https://fiatpay.com on your browser, log in with your credentials (without making them public), look up the transaction, and if the right transaction happened: transfer tokens to you.
  
 If you want this, you are willing to accept a couple points of centralization already:
-  1. you trusting FiatPay, especially that their servers aren't manipulated to falsely display a transaction that never happened - neither by a hacker nor by a rouge employee.
+  1. you trust FiatPay, especially that their servers aren't manipulated to falsely display a transaction that never happened - neither by a hacker nor by a rouge employee.
   2. you trust the centralized SSL certificate authorities (whose public keys are hardcoded in every browser) who gave FiatPay the certificate it uses to "prove" their authenticity to your browser
 
 Frankly, we believe 1. is already a stronger assumption than trusting AWS Nitro Enclaves. First of all, it is much, much easier for someone to manipulate FiatPay's server, than it is to hack into an AWS Nitro Enclave, for example. In the best case scenario, the FiatPay website would be running in such an enclave - but it's not. You can probably be lucky if it's hosted a regular AWS instance, instead of FiatPay trying to set up their own security infrastructure. 
