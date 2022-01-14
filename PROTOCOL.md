@@ -11,7 +11,7 @@ Our protocol consists of three pieces, one of which is [the code executed by the
 > "But that's not decentralized!"
 
 
-Yes, in a key way it's not, because we trust AWS's most secure instance type. But we're convinced that it is currently the right trade-off for most smart contracts who want to obtain proofs about internet data, so we need to make it accessible to everyone. 
+Yes, in a key way it's not, because we trust AWS's most secure instance type. But we're convinced that it is currently the right trade-off for most smart contracts who want to obtain proofs about internet data.
 
 To make that case, let's imagine the best-case scenario that achieves what our protocol does: allow you to convince any smart contract e.g. that you made a certain online payment to another user of "FiatPay.com" (think Venmo, PayPal, Cash App or Zelle, for example). In the best case scenario, the smart contract could directly visit https://fiatpay.com on your browser, log in with your credentials (without making them public), look up the transaction, and if the right transaction happened: transfer tokens to you.
  
