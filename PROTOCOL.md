@@ -1,4 +1,4 @@
-# Informal Protocol FAQ
+# Informal FAQ
 
 > "How does this all work?"
 
