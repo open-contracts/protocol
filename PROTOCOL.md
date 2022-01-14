@@ -19,7 +19,7 @@ If you want this, you are willing to accept a couple points of centralization al
   1. you trust FiatPay, especially that their servers aren't manipulated to falsely display a transaction that never happened - neither by a hacker nor by a rogue employee.
   2. you trust the centralized SSL certificate authorities (whose public keys are hardcoded in every browser) who gave FiatPay the certificate its server uses to "prove" its authenticity to your browser
 
-Frankly, we believe 1. is already a stronger assumption than trusting AWS Nitro Enclaves. First of all, it is much, much easier for someone to manipulate FiatPay's server, than it is to hack into an AWS Nitro Enclave, for example. In the best case scenario, the FiatPay website would be running in such an enclave - but it's not. You can probably be lucky if it's hosted a regular AWS instance, instead of FiatPay trying to set up their own security infrastructure. 
+Frankly, we believe 1. is already a stronger assumption than trusting AWS Nitro Enclaves. First of all, it is much, much easier for someone to manipulate FiatPay's server, than it is to hack into an AWS Nitro Enclave, for example. In the best case scenario, the FiatPay website would be running in such an enclave - but it's not. You're probably lucky if it's hosted a regular AWS instance, instead of FiatPay trying to set up their own security infrastructure. 
 
 <br/> 
 
