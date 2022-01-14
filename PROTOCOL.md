@@ -25,7 +25,7 @@ Frankly, we believe 1. is already a stronger assumption than trusting AWS Nitro 
 
 > "Do we really need enclaves?"
 
-There currently most popular approach to decentralized oracles relies on a game-theoretic idea called *peer prediction*. A number of participants each put down a deposit into a contract, hold a majority vote about what some website showed, and the capital-weighted average report is taken as the truth. Whoever deviates from this average is penalized. This has a couple problems: 
+There currently most popular approach to decentralized internet access for smart contracts relies on a game-theoretic idea called *peer prediction*. A number of participants each put down a deposit into a contract, hold a majority vote about what some website showed, and the capital-weighted average report is taken as the truth. Whoever deviates from this average is penalized. This has a couple problems: 
  1. The contract needs to incentivize many oracle nodes, which is only viable for long-term, recurring requests such as price-feeds
  2. If the data isn't public, you'd have to share your FiatPay login credentials
  3. Easy to break, if its truly permissionless: as soon as someone puts down large enough deposit, whatever they say becomes the 'truth' and everyone else is penalized. Taking historic accuracy into account only delays this issue.
