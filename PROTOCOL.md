@@ -46,7 +46,7 @@ In the meantime, we can focus on other aspects of decentralization: Support othe
 
 > "That's a bit sad. Any hope for secure, trustless Open Contracts in the future?"
 
-We're sure there is! For example, if multi-party computation algorithms improve to the point that we can efficiently split the secret between the prover and, say, a permissionless group of 100 randomly selecret notaries, then it would be enough to trust that just one of them keeps their secret. At this point, almost trustless web access for smart contracts would be possible. But to enable a platform that is as general-purpose and developer friendly as Open Contracts is today, we likely also need feasible zero-knowledge proofs for a whole Linux VM. 
+We're sure there is! For example, if multi-party computation algorithms improve to the point that we can efficiently split the secret between the prover and, say, a permissionless group of 100 randomly selecret notaries, then it would be enough to trust that just one of them keeps their secret. At this point, almost trustless web access for smart contracts would be possible. But to enable a platform that is as general-purpose and developer friendly as Open Contracts is today, we likely also need feasible zero-knowledge proofs for a whole Linux VM.
 
 To get there, a lot more research will be needed. We believe the best way to incentivize this research is to finally start creating contracts which take in more than just price feeds and provide real utility to people - and we need a platform that makes creating them easy.
 
