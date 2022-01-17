@@ -59,7 +59,7 @@ The remaining document will outline the protocol at a technical level.
              TLS-over-TLS
              based on pubkey
              in attestation                      
-             and SSL cert from                   TLS based on Chromium's
+             and SSL cert from                   TLS based on Linux's
              registry enclave                    Root CA store
 ┌─────────┐ ── ── ── ── ── ── ── ┌─────────────┐ ── ── ── ── ── ── ┌─────────────┐ 
 │         │ Oracle.py,           │             │ user login creds  │             │
