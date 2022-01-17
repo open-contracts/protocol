@@ -80,13 +80,13 @@ The remaining document will outline the protocol at a technical level.
        │                           │Provider │ attestation, CSR    │ Enclave  │
        │ Calldata                  │(on EC2) │ + provider address  └──────────┘
        │ (Signed by Oracle)        └─────────┘
-       │                                 ▲                                                 Off-Chain
-       │                                 │                                           ───────────────
-       │                                 │                                                  On-Chain 
+       │                                 ▲                                           
+       │                                 │                                          
+       │                                 │                                  
        │                  $OPN payments  │                         ┌──────────────────┐
-       │           ┌─────────────────────┴──────────────────────►  │ Registry Provider│
-       ▼           │                                               └──────────────────┘
-   ┌───────────────┴────┐  If valid:         ┌────────────┐
+       │           ┌─────────────────────┴──────────────────────►  │ Registry Provider│              Off-Chain
+       ▼           │                                               └──────────────────┘      ─────────────────
+   ┌───────────────┴────┐  If valid:         ┌────────────┐                                           On-Chain
    │OpenContractsHub.sol│ ────────────────►  │Contract.sol│
    └────────────────────┘  submit call       └────────────┘
        │    
