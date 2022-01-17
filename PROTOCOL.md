@@ -108,7 +108,7 @@ The following figure provides an overview of the protocol, which will be explain
 
 ## Cryptographic Attestation Mechanism
 
-## Contracts And Token
+## Core Contracts And Token
 
 ## The Oracle Image 
 
