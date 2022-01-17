@@ -108,7 +108,7 @@ We proceed to dive into the inner workings of the protocol for a technical audie
 
 ## 1. Cryptographic Attestation Mechanism
 
-The attestation process lies at the heart of how smart contracts, users, or enclaves can computationally validate that a piece of data was produced by some enclave running a particular image. An enclave image is the full snapshot of the virtual machine which will be executed by an enclave. See Section 3. for more details about the particular image running inside the oracle enclave. Central to the attestation process is the *attestation document* which can only be generated inside an enclave, and it contains three important pieces of information:
+The attestation process lies at the heart of how smart contracts, users, or enclaves can computationally validate that a piece of data was produced by some enclave running a particular image. An enclave image is the full snapshot of the virtual machine which will be executed by an enclave. See [Section 3.](https://github.com/open-contracts/protocol/blob/main/PROTOCOL.md#3-the-oracle-enclave-image) for more details about the particular image running inside the oracle enclave. Central to the attestation process is the *attestation document* which can only be generated inside an enclave, and it contains three important pieces of information:
 
  1. The hash of the enclave image
  2. The public key computed from a private key that was generated inside of the enclave
