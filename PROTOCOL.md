@@ -63,11 +63,11 @@ The remaining document will outline the protocol at a technical level.
              registry enclave                    Root CA store
 ┌─────────┐ ── ── ── ── ── ── ── ┌─────────────┐ ── ── ── ── ── ── ┌─────────────┐ 
 │         │ Oracle.py,           │             │ user login creds  │             │
-│         │ any dependencies,    │  Oracle     │ ────────────────► │ Some Website│
-│ USER    │ e.g. login creds,    │  Enclave    │ ◄──────────────── │             │
-│(browser)│ ───────────────────► │ ┌─────────┐ │ data for contract │             │
+│         │ any dependencies,    │  Oracle     │─────────────────► │ Some Website│
+│ USER    │ e.g. login creds,    │  Enclave    │ ◄─────────────────│             │
+│(browser)│────────────────────► │ ┌─────────┐ │ data for contract │             │
 │         │                      │ │Oracle.py│ │ ── ── ── ── ── ── └─────────────┘
-│         │ ◄─────────────────── │ └─────────┘ │ 
+│         │ ◄────────────────────│ └─────────┘ │ 
 │         │ Calldata, Signatures │             │
 └─────────┘ ── ── ── ── ── ── ── └─────────────┘ ◄──────────────────┐ If valid:
        │                                │                           │
@@ -76,17 +76,17 @@ The remaining document will outline the protocol at a technical level.
        │                                │                           │
        │ Oracle Enclave pubkey          ▼                           │  SSL cert
        │ Oracle Provider           ┌─────────┐                     ┌──────────┐
-       │(Signed by registry)       │Oracle   │ ─────────────────►  │ Registry │
+       │(Signed by registry)       │Oracle   │──────────────────►  │ Registry │
        │                           │Provider │ attestation, CSR    │ Enclave  │
        │ Calldata                  │(on EC2) │ + provider account  └──────────┘
        │ (Signed by Oracle)        └─────────┘                         ▲                             Off-Chain
        │                                 ▲                             │                     ─────────────────
        │                                 │                             │ provider account             On-Chain
-       │                                 │                             │        
-       │                  $OPN payments  │                         ┌───┴──────────────┐
-       │           ┌─────────────────────┴──────────────────────►  │ Registry Provider│
-       ▼           │                                               └──────────────────┘ 
-   ┌───────────────┴────┐  If valid:         ┌────────────┐                                
+       │                  $OPN payments  │                             │        
+       │          ┌──────────────────────┴──────────────────────►  ┌───┴──────────────┐
+       │          │  ┌─────────────────────────────────────────────│ Registry Provider│
+       ▼          │  ▼                      registration tx        └──────────────────┘ 
+   ┌──────────────┴─────┐  If valid:         ┌────────────┐                                
    │OpenContractsHub.sol│ ────────────────►  │Contract.sol│
    └────────────────────┘  submit call       └────────────┘
        │    
