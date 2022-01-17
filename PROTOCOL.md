@@ -105,13 +105,10 @@ We proceed to dive into the inner workings of the protocol for a technical audie
    └─────────────────┘
 ```
 
-## The Oracle Enclave Image 
 
+## 1. Cryptographic Attestation Mechanism
 
-
-## Cryptographic Attestation Mechanism
-
-The attestation process lies at the heart of how smart contracts, users, or enclaves can computationally validate that a piece of data was produced by some enclave running a particular image. Central to it is the *attestation document* which can only be generated inside an enclave, and it contains three important pieces of information:
+The attestation process lies at the heart of how smart contracts, users, or enclaves can computationally validate that a piece of data was produced by some enclave running a particular image. An enclave image is the full snapshot of the virtual machine which will be executed by an enclave. Central to the attestation process is the *attestation document* which can only be generated inside an enclave, and it contains three important pieces of information:
 
  1. The hash of the enclave image
  2. The public key computed from a private key that was generated inside of the enclave
@@ -125,13 +122,10 @@ Currently, the Hub will do so by offloading this computation into a special _Reg
 
 This current design has the disadvantage that if all registry enclaves went offline at the same time, the protocol could only recover if someone launched a new Hub - which would not be accepted by previous Open Contracts who would effectively turn blind. The developers therefore currently maintain a centralized backdoor to the Hub, which allows them to manually register new registry images in this event. The same backdoor is currently also used to deliver bugfixes as they arise, by changing the enclave and registry image hashes permitted by the protocol. Once the security of the images is established, this backdoor will be removed. By then, new registry enclaves could register with the Hub directly, which would verify their attestation document by an general-purpose optimistic rollup such as [Descartes Rollup](https://medium.com/cartesi/scalable-smart-contracts-on-ethereum-built-with-mainstream-software-stacks-8ad6f8f17997) or [Truebit](https://truebit.io/).
 
-## Core Contracts And Token
+## 2. Core Contracts And Token
 
+## 3. The Oracle Enclave Image 
 
+## 4. Compatibility with modern web browsers' security policies
 
-## User Interface
-
-
-## Compatibility with modern web browsers' security policies
-
-
+## 5. User Interface
