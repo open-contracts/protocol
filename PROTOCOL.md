@@ -89,7 +89,7 @@ The remaining document will outline the protocol at a technical level. It can be
    ┌──────────────┴─────┐                    ┌────────────┐                                
    │OpenContractsHub.sol│ ────────────────►  │Contract.sol│
    └────────────────────┘   If sigs valid:   └────────────┘
-       │                    submit call
+       │                    submit calldata
        │ $OPN payment   
        ▼ reducing supply   
    ┌─────────────────┐
