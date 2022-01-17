@@ -21,7 +21,7 @@ Yes, in a key way it's not, because we choose to trust AWS's most secure instanc
 
 To make that case, let's imagine the best-case scenario: a protocol that allows you to prove to a smart contract  - without additional trust assumptions - for example that you made a certain online payment to another user of "FiatPay.com" (think Venmo, PayPal, Cash App, Zelle...). In the best case, the smart contract would obtain the same proof that you get when you visit https://fiatpay.com on your browser, log in with your credentials (without making them public) and look up if a transaction occurred.
  
-If you agree this would be useful - e.g. for a trustless, peer-to-peer crypto-onramp - you are willing to accept a couple points of centralization already:
+If you agree this would be useful - e.g. for a trustless, peer-to-peer crypto on-/offramp - you are willing to accept a couple points of centralization already:
   1. You trust FiatPay, especially that their servers aren't manipulated to falsely display a transaction that never happened - neither by a hacker nor by a rogue employee.
   2. You trust the centralized SSL certificate authorities (whose public keys are hardcoded in every browser) who gave FiatPay the certificate its server uses to "prove" its authenticity to your browser.
 
