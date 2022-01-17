@@ -78,15 +78,15 @@ The remaining document will outline the protocol at a technical level.
        │ Oracle Provider           ┌─────────┐                     ┌──────────┐
        │(Signed by registry)       │Oracle   │ ─────────────────►  │ Registry │
        │                           │Provider │ attestation, CSR    │ Enclave  │
-       │ Calldata                  │(on EC2) │ + provider address  └──────────┘
-       │ (Signed by Oracle)        └─────────┘
-       │                                 ▲                                           
-       │                                 │                                          
-       │                                 │                                  
-       │                  $OPN payments  │                         ┌──────────────────┐
-       │           ┌─────────────────────┴──────────────────────►  │ Registry Provider│              Off-Chain
-       ▼           │                                               └──────────────────┘      ─────────────────
-   ┌───────────────┴────┐  If valid:         ┌────────────┐                                           On-Chain
+       │ Calldata                  │(on EC2) │ + provider account  └──────────┘
+       │ (Signed by Oracle)        └─────────┘                         ▲                             Off-Chain
+       │                                 ▲                             │                     ─────────────────
+       │                                 │                             │ provider account             On-Chain
+       │                                 │                             │        
+       │                  $OPN payments  │                         ┌───┴──────────────┐
+       │           ┌─────────────────────┴──────────────────────►  │ Registry Provider│
+       ▼           │                                               └──────────────────┘ 
+   ┌───────────────┴────┐  If valid:         ┌────────────┐                                
    │OpenContractsHub.sol│ ────────────────►  │Contract.sol│
    └────────────────────┘  submit call       └────────────┘
        │    
