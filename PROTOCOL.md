@@ -52,7 +52,7 @@ To get there, a lot more research will be needed. We believe the best way to inc
 
 # The Protocol
 
-The remaining document will outline the protocol at a technical level. 
+The remaining document will outline the protocol at a technical level. It can be summarized by the following figure:
 
 
 ```ascii
