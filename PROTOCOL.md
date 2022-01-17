@@ -78,7 +78,7 @@ The remaining document will outline the protocol at a technical level. It can be
        │ Oracle Provider           ┌─────────┐                     ┌──────────┐
        │(Signed by registry)       │Oracle   │──────────────────►  │ Registry │
        │                           │Provider │ attestation, CSR    │ Enclave  │
-       │ Calldata                  │(on EC2) │ + provider account  └──────────┘
+       │ calldata                  │(on EC2) │ + provider account  └──────────┘
        │ (Signed by Oracle)        └─────────┘                         ▲                             Off-Chain
        │                                 ▲                             │                     ─────────────────
        │                                 │                             │ provider account             On-Chain
