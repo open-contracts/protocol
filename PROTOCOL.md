@@ -34,7 +34,7 @@ In short: AWS Nitro Enclaves require much less trust than most websites do to be
 > "Do we really need enclaves?"
 
 The currently most popular approach to decentralized internet access for smart contracts relies on a game-theoretic idea called *peer prediction*. A number of participants each put down a deposit into a contract, hold a majority vote about what some website showed, and the capital-weighted average report is taken as the truth. Whoever deviates from this average is penalized. This has a couple of problems: 
- 1. Easy to break, if its truly permissionless: as soon as someone puts down large enough deposit (a "51% attack"), whatever they say becomes the 'truth' and everyone else is penalized. Taking historic accuracy into account only delays this issue.
+ 1. Easy to break, if it's truly permissionless: as soon as someone puts down large enough deposit (a "51% attack"), whatever they say becomes the 'truth' and everyone else is penalized. Taking historic accuracy into account only delays this issue.
  2. Contracts need to incentivize a huge number of votes to make a 51% attack difficult, which is only affordable for long-term, recurring requests used by multiple contracts (e.g. price-feeds). It doesn't work as well if you're trying to sell a secure weather insurance which needs to reliably verify *once* whether it rained more than some amount over the course of next summer.
  3. If the data isn't public - like your FiatPay transaction - you'd have to share your FiatPay login credentials.
 
