@@ -69,7 +69,7 @@ The remaining document will outline the protocol at a technical level. It can be
 │         │                      │ │Oracle.py│ │ ── ── ── ── ── ── └─────────────┘
 │         │ ◄────────────────────│ └─────────┘ │ 
 │         │ Calldata, Signatures │             │
-└─────────┘ ── ── ── ── ── ── ── └─────────────┘ ◄──────────────────┐ If valid:
+└─────────┘ ── ── ── ── ── ── ── └─────────────┘ ◄──────────────────┐ If attestation valid:
        │                                │                           │
        │                                │attestation                │ signature over 
        │ $OPN payment                   │CSR (=cert sign request)   │ {Oracle Enclave pubkey, Oracle Provider}
@@ -88,8 +88,8 @@ The remaining document will outline the protocol at a technical level. It can be
        ▼          │  ▼                      registration tx        └──────────────────┘ 
    ┌──────────────┴─────┐                    ┌────────────┐                                
    │OpenContractsHub.sol│ ────────────────►  │Contract.sol│
-   └────────────────────┘    If valid:       └────────────┘
-       │                     submit call
+   └────────────────────┘   If sigs valid:   └────────────┘
+       │                    submit call
        │ $OPN payment   
        ▼ reducing supply   
    ┌─────────────────┐
