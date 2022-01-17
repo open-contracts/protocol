@@ -114,6 +114,7 @@ The following figure provides an overview of the protocol, which will be explain
 
 ## User Interface
 
+
 ## Compatibility with modern web browsers' security policies
 
 
