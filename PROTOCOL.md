@@ -44,7 +44,7 @@ In the meantime, we can focus on other aspects of decentralization: support othe
 
 <br/> 
 
-> "That's a bit sad. Any hope for trustless Open Contracts in the future?"
+> "That's a bit sad. Any hope for a trustless Open Contracts in the future?"
 
 Yes! For example, if multi-party computation algorithms improve to the point that we can efficiently split the secret between the prover and, say, a permissionless group of 100 randomly selected notaries, then it would be enough to trust that just one of them keeps their secret. At this point, almost trustless web access for smart contracts would be possible. But to enable a platform that is as general-purpose, privacy preserving and developer friendly as Open Contracts is today, we expect to need performant ZKPs for a whole Linux VM (Good News: we can already run [Linux on the EVM](https://github.com/cartesi/machine-solidity-step), and soon we'll get ZKPs for the EVM as well!).
 
