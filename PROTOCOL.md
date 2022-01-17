@@ -122,10 +122,14 @@ Currently, the Hub will do so by offloading this computation into a special _Reg
 
 This current design has the disadvantage that if all Registries went offline at the same time, the protocol could only recover if someone launched a new Hub - which would not be accepted by previous Open Contracts who would effectively turn blind. The developers therefore currently maintain a centralized backdoor to the Hub, which allows them to manually register a new Registry in this event. The same backdoor is currently also used to deliver bugfixes as they arise, by changing the Enclave and Registry image hashes permitted by the protocol. Once the security of the images is established, this backdoor will be removed. By then, new registry enclaves could register with the Hub directly, which would verify their attestation document by an general-purpose optimistic rollup such as [Descartes Rollup](https://medium.com/cartesi/scalable-smart-contracts-on-ethereum-built-with-mainstream-software-stacks-8ad6f8f17997) or [Truebit](https://truebit.io/).
 
-## 2. Core Contracts And Token
+## 2. Core Contracts: Token, Hub and Forwarder
+
+
 
 ## 3. The Oracle Enclave Image 
 
+
 ## 4. Compatibility with modern web browsers' security policies
+
 
 ## 5. User Interface
