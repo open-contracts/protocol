@@ -60,7 +60,7 @@ To get there, a lot more research will be needed. We believe the best way to inc
 
 # The Protocol
 
-The following figure provides an overview of the protocol, and the remaining document will dive into the details.
+The following figure provides an overview of the protocol, which will be explained by the remaining document in more detail.
 
 
 ```ascii
