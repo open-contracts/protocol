@@ -86,10 +86,10 @@ The remaining document will outline the protocol at a technical level.
        │          ┌──────────────────────┴──────────────────────►  ┌───┴──────────────┐
        │          │  ┌─────────────────────────────────────────────│ Registry Provider│
        ▼          │  ▼                      registration tx        └──────────────────┘ 
-   ┌──────────────┴─────┐  If valid:         ┌────────────┐                                
+   ┌──────────────┴─────┐                    ┌────────────┐                                
    │OpenContractsHub.sol│ ────────────────►  │Contract.sol│
-   └────────────────────┘  submit call       └────────────┘
-       │    
+   └────────────────────┘    If valid:       └────────────┘
+       │                     submit call
        │ $OPN payment   
        ▼ reducing supply   
    ┌─────────────────┐
