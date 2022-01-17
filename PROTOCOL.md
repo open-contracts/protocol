@@ -108,7 +108,7 @@ We proceed to dive into the inner workings of the protocol for a technical audie
 
 ## 1. Cryptographic Attestation Mechanism
 
-The attestation process lies at the heart of how smart contracts, users, or enclaves can computationally validate that a piece of data was produced by some enclave running a particular image. An enclave image is the full snapshot of the virtual machine which will be executed by an enclave. See [Section 3](https://github.com/open-contracts/protocol/blob/main/PROTOCOL.md#3-the-oracle-enclave-image) for more details about the particular image of the _Oracle_ enclave, the main enclave of our protocol. Central to the attestation process is the *attestation document* which can only be generated inside an enclave, and it contains three important pieces of information:
+The attestation process lies at the heart of how smart contracts, users, or enclaves can computationally validate that a piece of data was produced by some enclave running a particular image. An enclave image is the full snapshot of the virtual machine which will be executed by an enclave. See [Section 2](https://github.com/open-contracts/protocol/blob/main/PROTOCOL.md#3-the-oracle-enclave-image) for more details about the particular image of the _Oracle_ enclave, the main enclave of our protocol. Central to the attestation process is the *attestation document* which can only be generated inside an enclave, and it contains three important pieces of information:
 
  1. The hash of the enclave image
  2. The public key computed from a private key that was generated inside of the enclave
@@ -122,11 +122,40 @@ Currently, the Hub will do so by offloading this computation into a special _Reg
 
 This current design has the disadvantage that if all Registries went offline at the same time, the protocol could only recover if someone launched a new Hub - which would not be accepted by previous Open Contracts who would effectively turn blind. The developers therefore currently maintain a centralized backdoor to the Hub, which allows them to manually register a new Registry in this event. The same backdoor is currently also used to deliver bugfixes as they arise, by changing the Enclave and Registry image hashes permitted by the protocol. Once the security of the images is established, this backdoor will be removed. By then, new registry enclaves could register with the Hub directly, which would verify their attestation document by an general-purpose optimistic rollup such as [Descartes Rollup](https://medium.com/cartesi/scalable-smart-contracts-on-ethereum-built-with-mainstream-software-stacks-8ad6f8f17997) or [Truebit](https://truebit.io/).
 
-## 2. Core Contracts: Token and Hub
 
 
+## 2. The Oracle Enclave Image 
 
-## 3. The Oracle Enclave Image 
+The oracle enclave image always exectues the same steps after it is started:
+
+ 1. It connects to a registry enclave, goes through the attestation process and receives a signature of its public key from the registry and saves it for Step 8.
+ 2. It establishes a bi-directional WebSocket connection to a user (who was forwarded by the registry). All communication is encrypted via AES after an RSA key exchange based on the public key inside the attestation document. The enclave exposes a set of remote-procedure calls (RPCs) to the user's fontend, and vice versa.
+ 3. It asks the user to authenticate by signing random bytes, and lets the user upload an `oracle.py` script along with optional dependencies.
+ 4. It computes the `oracleID`, which is the hash of the user-submitted `oracle.py` and its dependencies, and saves for Step 8.
+ 5. It installs the dependencies and runs the (untrusted) `oracle.py` script in a Python Virtualenv inside a [Firejail Sandbox](https://firejail.wordpress.com/)
+ 6. Any error in the oracle execution is intercepted and forwarded to the user.
+ 7. Any valid `oracle.py` script imports the `opencontracts` package, which exposes functions allowing it to call the RPCs of the users frontend in order to:
+    -  print messages to the user
+    -  ask the user for an input, which gets returned as string
+    -  display a waiting timer to the user, along with some reason (e.g. "downloading NASA data...")
+    -  start an "interactive session", where the user controls (via a html5 X11 client) a chromium browser in Kiosk-mode running inside the enclave, saving an .mhtml snapshot at the push of a button which gets returned to the `oracle.py` script
+    -  submit the final results
+ 8. Once the submission is triggered by the `oracle.py` script, the results are prepended with the `oracleHash` from Step 4., and signed with the public key of the oracle enclave. They are forwarded to the user, together with the registry's signature of the oracle's public key from Step 1.
+
+The user now has all they need to submit the results of the computation to the Hub.
+
+## 3. Core Contracts: Hub and Token
+
+Every Open Contract declares (via a Solidity function modifier) which of its Solidity functions can only be called with the results of a particular oracle computation, defined by an `oracle.py` script and its dependencies. It does so by only allowing calls to such a function if they come from the Open Contracts Hub, and only if its first argument corresponds to the right `oracleID`.
+
+The Hub is the core contract of the protocol, it serves multiple roles at once:
+ - it keeps track of the public keys of all registry enclaves
+ - it verifies that the `oracleID` and the results are signed by an oracle enclave public key which was signed by a known registry public key
+ - it transfers $OPN from the user to the oracle provider, the registry provider, and to the [0xdead burner address](https://etherscan.io/address/0x000000000000000000000000000000000000dead)
+ - if everything checks out, it forwards the `oracleID` and the results to the Open Contract, calling the function specified by the user
+
+The $OPN token conforms to the regular ERC20/ERC777 token standards. The enforced burning of $OPN at every Hub transaction aims to create a deflationary pressure that increases in the overall protocol activity, with the goal of rewarding those who provide the early $OPN liquidity necessary to incentivize oracle providers.
+
 
 
 ## 4. Compatibility with modern web browsers' security policies
