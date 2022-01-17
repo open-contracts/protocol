@@ -1,5 +1,9 @@
 # Informal Protocol FAQ
 
+> "What does the protocol achieve?"
+
+For the first time, we're opening up smart contracts to _all of web2_, by empowering contract users to prove the authenticity of any https data they can access at the push of a button - even non-API data, requiring login credentials, 2-factor authentication or CAPTCHAs. We're also making it really easy to build these _Open Contracts_: just write the Ethereum contract logic in Solidity, the web and data logic in Python, and our protocol takes care of the rest. We even create a Dapp for your contract automatically. 
+
 > "How does this all work?"
 
 Our main ingredient are *enclaves* aka *trusted execution environments* running [our open-source code](https://github.com/open-contracts/enclave-protocol), which can be hosted by anyone who has an account with a supported cloud provider. For now, only [AWS Nitro Enclaves](https://aws.amazon.com/ec2/nitro/nitro-enclaves/) are supported, but we'd like to support [Azure's SGX Enclaves](https://docs.microsoft.com/en-us/azure/confidential-computing/confidential-computing-enclaves) as well. Intuitively, you can think of such enclaves as a type of cloud instance where the cloud provider promises that nobody - neither the person who launched it nor the cloud provider itself - can manipulate the execution of a given computer environment once it started (or see any secrets generated inside of it), and where the provider signs an "attestation document", with which we can cryptographically verify that a certain computation returned a certain result.
@@ -48,14 +52,14 @@ In the meantime, we can focus on other aspects of decentralization: make sure th
 
 > "That's a bit sad. Any hope for an Open Contracts with a fully decentralized trust model in the future?"
 
-Yes! For example, if multi-party computation algorithms improve to the point that we can efficiently split the secret between, say, a permissionless group of 100 randomly selected notaries, then it would be enough to trust that just one of them keeps their secret. If they can jointly perform the TLS handshake quickly enough, almost trustless web access for smart contracts would be possible. But to enable a platform that is as general-purpose, privacy preserving and developer friendly as Open Contracts is today, we also expect to need performant ZKPs for a whole Linux VM (Good News: we can already run [Linux on the EVM](https://github.com/cartesi/machine-solidity-step), and soon we'll get [ZK](https://blog.polygon.technology/polygon-zk-days-recap-polygon-zero-reveal-and-panel-talk-with-vitalik/)[Ps](https://zksync.io/zkevm/) of the EVM as well!).
+Yes! For example, if multi-party computation algorithms improve to the point that we can efficiently split the TLS secret between, say, a permissionless group of 100 randomly selected notaries, then it would be enough to trust that just one of them keeps their secret. If they can jointly perform the TLS handshake quickly enough, almost trustless web access for smart contracts would be possible. But to enable a platform that is as general-purpose, privacy preserving and developer friendly as Open Contracts is today, we also expect to need performant ZKPs for a whole Linux VM (Good News: we can already run [Linux on the EVM](https://github.com/cartesi/machine-solidity-step), and soon we'll get [ZK](https://blog.polygon.technology/polygon-zk-days-recap-polygon-zero-reveal-and-panel-talk-with-vitalik/)[Ps](https://zksync.io/zkevm/) of the EVM as well!).
 
-To get there, a lot more research will be needed. We believe the best way to incentivize this research is to finally start creating contracts which take in more than just price feeds and provide real utility to people. And for that, we need a platform that makes creating them easy.
+To get there, a lot more research will be needed. We believe the best way to incentivize this research is to finally start creating contracts which take in more than just price feeds and provide real utility to people. And for that, we need a platform that makes creating them easy. So let's dive into the details!
 
 # The Protocol
 
-The remaining document will dive into the technical details of the protocol. It can be summarized by the following figure:
-
+The Open Contracts oracle protocol can be summarized by the following figure.
+The remaining document will dive into the technical details of the protocol. It can be summarized by the following figure, it's indiv
 
 ```ascii
              TLS-over-TLS
