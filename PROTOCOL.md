@@ -85,7 +85,7 @@ The remaining document will outline the protocol at a technical level. It can be
        │                  $OPN payments  │                             │        
        │          ┌──────────────────────┴──────────────────────►  ┌───┴──────────────┐
        │          │  ┌─────────────────────────────────────────────│ Registry Provider│
-       ▼          │  ▼                      registration tx        └──────────────────┘ 
+       ▼          │  ▼      registration tx                        └──────────────────┘ 
    ┌──────────────┴─────┐                    ┌────────────┐                                
    │OpenContractsHub.sol│ ────────────────►  │Contract.sol│
    └────────────────────┘   If sigs valid:   └────────────┘
