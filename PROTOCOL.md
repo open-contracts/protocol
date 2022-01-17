@@ -52,11 +52,8 @@ To get there, a lot more research will be needed. We believe the best way to inc
 
 # The Protocol
 
+The remaining document will outline the protocol at a technical level. 
 
-
-
-
-The protocol can be summarized by the following flow chart:
 
 ```ascii
              TLS-over-TLS
@@ -83,9 +80,9 @@ The protocol can be summarized by the following flow chart:
        │                           │Provider │ attestation, CSR    │ Enclave  │
        │ Calldata                  │(on EC2) │ + provider address  └──────────┘
        │ (Signed by Oracle)        └─────────┘
-       │                                 ▲
-       │                                 │
-       │                                 │
+       │                                 ▲                                                 Off-Chain
+       │                                 │                                           ───────────────
+       │                                 │                                                  On-Chain 
        │                  $OPN payments  │                         ┌──────────────────┐
        │           ┌─────────────────────┴──────────────────────►  │ Registry Provider│
        ▼           │                                               └──────────────────┘
@@ -99,4 +96,16 @@ The protocol can be summarized by the following flow chart:
    │ Burner Address  │
    └─────────────────┘
 ```
+
+
+## Cryptographic Attestation Mechanism
+
+## Contracts And Token
+
+## The Oracle Image 
+
+## User Interface
+
+## Compatibility with modern web browsers' security policies
+
 
