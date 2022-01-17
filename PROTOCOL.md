@@ -19,7 +19,7 @@ Our protocol consists of three pieces. The first is [the code executed by the en
 
 Yes, in a key way it's not, because we choose to trust AWS's most secure instance type. But we're convinced that it is currently the right trade-off for most smart contracts who want to obtain proofs about internet data.
 
-To make that case, let's imagine the best-case scenario: a protocol that allows you to prove to a smart contract, for example that you made a certain online payment to another user of "FiatPay.com" (think Venmo, PayPal, Cash App, Zelle...), but without additional trust assumptions. In the best case, the smart contract would obtain the same proof that you get when you visit https://fiatpay.com on your browser, log in with your credentials (without making them public) and look up if a transaction occurred.
+To make that case, let's imagine the best-case scenario: a protocol that allows you to prove to a smart contract  - without additional trust assumptions - for example that you made a certain online payment to another user of "FiatPay.com" (think Venmo, PayPal, Cash App, Zelle...). This enables the most trustless, peer-to-peer crypto-onramp we can think of. In the best case, the smart contract would obtain the same proof that you get when you visit https://fiatpay.com on your browser, log in with your credentials (without making them public) and look up if a transaction occurred.
  
 If you agree this would be useful, you are willing to accept a couple points of centralization already:
   1. You trust FiatPay, especially that their servers aren't manipulated to falsely display a transaction that never happened - neither by a hacker nor by a rogue employee.
