@@ -135,11 +135,11 @@ The oracle enclave image always exectues the same steps after it is started:
  5. It installs the dependencies and runs the (untrusted) `oracle.py` script in a Python Virtualenv inside a [Firejail Sandbox](https://firejail.wordpress.com/)
  6. Any error in the oracle execution is intercepted and forwarded to the user.
  7. Any valid `oracle.py` script imports the `opencontracts` package, which exposes functions allowing it to call the RPCs of the users frontend in order to:
-    -  print messages to the user
-    -  ask the user for an input, which gets returned as string
-    -  display a waiting timer to the user, along with some reason (e.g. "downloading NASA data...")
-    -  start an "interactive session", where the user controls (via a html5 X11 client) a chromium browser in Kiosk-mode running inside the enclave, saving an .mhtml snapshot at the push of a button which gets returned to the `oracle.py` script
-    -  submit the final results
+  -  print messages to the user
+  -  ask the user for an input, which gets returned as string
+  -  display a waiting timer to the user, along with some reason (e.g. "downloading NASA data...")
+  -  start an "interactive session", where the user controls (via a html5 X11 client) a chromium browser in Kiosk-mode running inside the enclave, saving an .mhtml snapshot at the push of a button which gets returned to the `oracle.py` script
+  -  submit the final results
  8. Once the submission is triggered by the `oracle.py` script, the results are prepended with the `oracleHash` from Step 4., and signed with the public key of the oracle enclave. They are forwarded to the user, together with the registry's signature of the oracle's public key from Step 1.
 
 The user now has all they need to submit the results of the computation to the Hub.
@@ -154,7 +154,7 @@ The Hub is the core contract of the protocol, it serves multiple roles at once:
  - it transfers $OPN from the user to the oracle provider, the registry provider, and to the [0xdead burner address](https://etherscan.io/address/0x000000000000000000000000000000000000dead)
  - if everything checks out, it forwards the `oracleID` and the results to the Open Contract, calling the function specified by the user
 
-The $OPN token conforms to the regular ERC20/ERC777 token standards. The enforced burning of $OPN at every Hub transaction aims to create a deflationary pressure that increases in the overall protocol activity, with the goal of rewarding those who provide the early $OPN liquidity necessary to incentivize oracle providers.
+The $OPN token conforms to the regular ERC20/ERC777 token standards. The enforced burning of $OPN at every Hub transaction aims to create a deflationary pressure that increases in the overall protocol activity, with the goal of bootstrapping the $OPN liquidity on the one hand that is necessary to incentivize oracle providers on the other hand.
 
 
 
