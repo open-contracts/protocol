@@ -59,7 +59,7 @@ The remaining document will outline the protocol at a technical level.
              TLS-over-TLS
              based on pubkey
              in attestation                      
-             and SSL cert from                   TLS based on Mozilla's
+             and SSL cert from                   TLS based on Browser's
              registry enclave                    Root CA store
 ┌─────────┐ ── ── ── ── ── ── ── ┌─────────────┐ ── ── ── ── ── ── ┌─────────────┐ 
 │         │ Oracle.py,           │             │ user login creds  │             │
