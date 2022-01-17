@@ -2,7 +2,8 @@
 
 > "What does the protocol achieve?"
 
-For the first time, we're opening up smart contracts to _all of web2_, by empowering contract users to prove the authenticity of any https data they can access at the push of a button - even non-API data, requiring login credentials, 2-factor authentication or CAPTCHAs. We're also making it really easy to build these _Open Contracts_: just write the Ethereum contract logic in Solidity, the web and data logic in Python, and our protocol takes care of the rest. We even create a Dapp for your contract automatically. 
+For the first time, we're opening up smart contracts to _all of web2_, by empowering contract users to prove the authenticity of any https data they can access at the push of a button - even non-API data requiring login credentials, 2-factor authentication or CAPTCHAs, for example. Such an _Open Contract_ is very easy to build, as it consists of just two pieces: the Ethereum contract logic written in Solidity, and the web logic written in Python. Our protocol takes care of the rest, making sure that a given Solidity function will only accept the results from its corresponding Python script. We even create a Dapp for your contract automatically, so you can focus on what matters most: understanding the real world problem, and the people whose cooperation you want to enable with the right contract.  
+
 
 > "How does this all work?"
 
