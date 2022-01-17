@@ -1,4 +1,4 @@
-# Informal FAQ
+# Informal FAQ about Design Decisions 
 
 > "How does this all work?"
 
