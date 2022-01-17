@@ -60,8 +60,8 @@ To get there, a lot more research will be needed. We believe the best way to inc
 
 # The Protocol
 
-The Open Contracts oracle protocol can be summarized by the following figure.
-The remaining document will dive into the technical details of the protocol. It can be summarized by the following figure, it's indiv
+The following figure provides an overview of the protocol, and the remaining document will dive into the details.
+
 
 ```ascii
              TLS-over-TLS
