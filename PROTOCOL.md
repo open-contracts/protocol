@@ -154,7 +154,7 @@ The Hub is the core contract of the protocol, it serves multiple roles at once:
  - it transfers $OPN from the user to the oracle provider, the registry provider, and to the [0xdead burner address](https://etherscan.io/address/0x000000000000000000000000000000000000dead)
  - if everything checks out, it forwards the `oracleID` and the results to the Open Contract, calling the function specified by the user
 
-The $OPN token conforms to the regular ERC20/ERC777 token standards. The enforced burning of $OPN at every Hub transaction aims to create a deflationary pressure that increases in the overall protocol activity, with the goal of bootstrapping the $OPN liquidity on the one hand that is necessary to incentivize oracle providers on the other hand.
+The $OPN token conforms to the regular ERC20/ERC777 token standards. The enforced burning of $OPN at every Hub transaction aims to create a deflationary pressure that increases in the overall protocol activity - with the goal of bootstrapping the $OPN liquidity on the one hand that is necessary to incentivize enclave providers on the other hand, who ultimately have to rent out the instances from AWS or Azure. 
 
 
 
