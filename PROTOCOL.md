@@ -139,7 +139,7 @@ The oracle enclave image always exectues the same steps after it is started:
     -  display a waiting timer to the user, along with some reason (e.g. "downloading NASA data...")
     -  start an "interactive session", where the user controls (via a html5 X11 client) a chromium browser in Kiosk-mode running inside the enclave, saving an .mhtml snapshot at the push of a button which gets returned to the `oracle.py` script
     -  submit the final results
- 8. Once the submission is triggered by the `oracle.py` script, the results are prepended with the `oracleHash` from Step 4., and signed with the public key of the oracle enclave. They are forwarded to the user, together with the registry's signature of the oracle's public key from Step 1.
+ 8. Once the submission is triggered by the `oracle.py` script, the results are prepended with the `oracleID` from Step 4., and signed with the public key of the oracle enclave. They are forwarded to the user, together with the registry's signature of the oracle's public key from Step 1.
 
 The user now has all they need to submit the results of the computation to the Hub.
 
