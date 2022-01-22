@@ -60,8 +60,7 @@ To get there, a lot more research will be needed. We believe the best way to inc
 
 # The Protocol
 
-We proceed to dive into the inner workings of the protocol for a more technical audience. The following figure provides an overview of the protocol, which will be explained by the remaining document in more detail. The oracle and registry providers are customers of the cloud provider, who rent an enclave-capable cloud instance from them, install our open-source code and let it participate in the protocol. `Contract.sol` is the Solidty part of the Open Contract, executed on the Ethereum blockchain. `Oracle.py` is the python script (and its dependencies), which is executed by the Oracle enclave and describes the logic by which it requests data from some website, and computes the results. The results are initially submitted to the `OpenContractsHub.sol`, the core contract of our protocol, which verifies that the results were computed by a authentic Oracle enclave, by checking that the Oracle enclave was able to prove its authenticity to the Registry enclave. The  `OpenContractsHub.sol` also verifies that the user reimburses the enclave providers via the $OPN token, while burning a small share of $OPN at every transaction.
-
+We proceed to dive into the inner workings of the protocol for a more technical audience. The following figure provides an overview of the protocol, which will be explained by the remaining document in more detail. 
 
 ```ascii
              TLS-over-TLS
@@ -104,7 +103,7 @@ We proceed to dive into the inner workings of the protocol for a more technical 
    │ Burner Address  │
    └─────────────────┘
 ```
-
+The oracle and registry providers are customers of the cloud provider, who rent an enclave-capable cloud instance from them, install our open-source code and let it participate in the protocol. `Contract.sol` is the Solidty part of the Open Contract, executed on the Ethereum blockchain. `Oracle.py` is the python script (and its dependencies), which is executed by the Oracle enclave and describes the logic by which it requests data from some website, and computes the results. The results are initially submitted to the `OpenContractsHub.sol`, the core contract of our protocol, which verifies that the results were computed by a authentic Oracle enclave, by checking that the Oracle enclave was able to prove its authenticity to the Registry enclave. The  `OpenContractsHub.sol` also verifies that the user reimburses the enclave providers via the $OPN token, while burning a small share of $OPN at every transaction.
 
 ## 1. Cryptographic Attestation Mechanism
 
