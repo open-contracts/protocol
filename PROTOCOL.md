@@ -67,11 +67,11 @@ We proceed to dive into the inner workings of the protocol for a more technical 
              based on pubkey
              in attestation                      
              and SSL cert from                   TLS based on Linux's
-             registry enclave                    Root CA store
+             Registry enclave                    Root CA store
 ┌─────────┐ ── ── ── ── ── ── ── ┌─────────────┐ ── ── ── ── ── ── ┌─────────────┐ 
 │         │ Oracle.py,           │             │ user login creds  │             │
 │         │ any dependencies,    │  Oracle     │─────────────────► │ Some Website│
-│ USER    │ e.g. login creds,    │  Enclave    │ ◄─────────────────│             │
+│ USER    │ e.g. login creds,    │  enclave    │ ◄─────────────────│             │
 │(browser)│────────────────────► │ ┌─────────┐ │ data for contract │             │
 │         │                      │ │Oracle.py│ │ ── ── ── ── ── ── └─────────────┘
 │         │ ◄────────────────────│ └─────────┘ │ 
@@ -83,7 +83,7 @@ We proceed to dive into the inner workings of the protocol for a more technical 
        │                                │                           │
        │ Oracle Enclave pubkey          ▼                           │  SSL cert
        │ Oracle Provider           ┌─────────┐                     ┌──────────┐
-       │(Signed by registry)       │Oracle   │──────────────────►  │ Registry │
+       │(Signed by Registry)       │Oracle   │──────────────────►  │ Registry │
        │                           │Provider │ attestation, CSR    │ Enclave  │
        │ Results                   │(on EC2) │ + provider account  └──────────┘
        │ (Signed by Oracle)        └─────────┘                         ▲                             Off-Chain
@@ -103,7 +103,7 @@ We proceed to dive into the inner workings of the protocol for a more technical 
    │ Burner Address  │
    └─────────────────┘
 ```
-The oracle and registry providers are customers of the cloud provider (for now: AWS), who rent an enclave-capable cloud instance from them, install our open-source code and let it participate in the protocol. `Contract.sol` is the Solidty part of the Open Contract, executed on the Ethereum blockchain. `Oracle.py` is the python script (and its dependencies), which is executed by the Oracle enclave and describes the logic by which it requests data from some website, and computes the results. The results are initially submitted to the `OpenContractsHub.sol`, the core contract of our protocol, which verifies that the results were computed by a authentic Oracle enclave, by checking that the Oracle enclave was able to prove its authenticity to the Registry enclave. The  `OpenContractsHub.sol` also verifies that the user reimburses the enclave providers via the $OPN token, while burning a small share of $OPN at every transaction.
+The Oracle and Registry providers are customers of the cloud provider (for now: AWS), who rent an enclave-capable cloud instance from them, install our open-source code and let it participate in the protocol. `Contract.sol` is the Solidty part of the Open Contract, executed on the Ethereum blockchain. `Oracle.py` is the python script (and its dependencies), which is executed by the Oracle enclave and describes the logic by which it requests data from some website, and computes the results. The results are initially submitted to the `OpenContractsHub.sol`, the core contract of our protocol, which verifies that the results were computed by a authentic Oracle enclave, by checking that the Oracle enclave was able to prove its authenticity to the Registry enclave. The  `OpenContractsHub.sol` also verifies that the user reimburses the enclave providers via the $OPN token, while burning a small share of $OPN at every transaction.
 
 ## 1. Cryptographic Attestation Mechanism
 
@@ -132,14 +132,14 @@ The oracle enclave image always exectues the same steps after it is started:
  3. It asks the user to authenticate by signing random bytes, and lets the user upload an `oracle.py` script along with optional dependencies.
  4. It computes the `oracleID`, which is the hash of the user-submitted `oracle.py` and its dependencies, and saves for Step 8.
  5. It installs the dependencies and runs the (untrusted) `oracle.py` script in a Python Virtualenv inside a [Firejail Sandbox](https://firejail.wordpress.com/)
- 6. Any error in the oracle execution is intercepted and forwarded to the user.
+ 6. Any error in the `oracle.py` execution is intercepted and forwarded to the user.
  7. Any valid `oracle.py` script imports the `opencontracts` package, which exposes functions allowing it to call the RPCs of the users frontend in order to:
     -  print messages to the user
     -  ask the user for an input, which gets returned as string
     -  display a waiting timer to the user, along with some reason (e.g. "downloading NASA data...")
     -  start an "interactive session", where the user controls (via a html5 X11 client) a chromium browser in Kiosk-mode running inside the enclave, saving an .mhtml snapshot at the push of a button which gets returned to the `oracle.py` script
     -  submit the final results
- 8. Once the submission is triggered by the `oracle.py` script, the results are prepended with the `oracleID` from Step 4., and signed with the public key of the oracle enclave. They are forwarded to the user, together with the registry's signature of the oracle's public key from Step 1.
+ 8. Once the submission is triggered by the `oracle.py` script, the results are prepended with the `oracleID` from Step 4., and signed with the public key of the Oracle enclave. They are forwarded to the user, together with the registry's signature of the Oracle enclave's public key from Step 1.
 
 The user now has all they need to submit the results of the computation to the Hub.
 
@@ -148,16 +148,16 @@ The user now has all they need to submit the results of the computation to the H
 Every Open Contract declares (via a Solidity function modifier) which of its Solidity functions can only be called with the results of a particular oracle computation, defined by an `oracle.py` script and its dependencies. It does so by only allowing calls to such a function if they come from the Open Contracts Hub, and only if its first argument corresponds to the right `oracleID`.
 
 The Hub contract is at the heart of the protocol. It serves multiple roles at once:
- - it keeps track of the public keys of all registry enclaves
- - it verifies that the `oracleID` and the results are signed by an oracle enclave public key which was signed by a known registry public key
- - it transfers $OPN from the user to the oracle provider, the registry provider, and to the [0xdead burner address](https://etherscan.io/address/0x000000000000000000000000000000000000dead)
+ - it keeps track of the public keys of all Registry enclaves
+ - it verifies that the `oracleID` and the results are signed by an Oracle enclave public key which was signed by a known Registry public key
+ - it transfers $OPN from the user to the Oracle provider, the Registry provider, and to the [0xdead burner address](https://etherscan.io/address/0x000000000000000000000000000000000000dead)
  - if everything checks out, it forwards the `oracleID` and the results to the Open Contract, calling the function specified by the user
 
 The $OPN token conforms to the regular ERC20/ERC777 token standards. The enforced burning of $OPN at every Hub transaction aims to create a deflationary pressure that increases with the overall protocol activity - incentivizing early $OPN liquidity on the one hand that is necessary to incentivize enclave providers on the other hand, who ultimately have to rent out the instances from AWS or Azure. 
 
 ## 4. Compatibility with modern web browsers' security policies
 
-While the protocol effectively establishes a secure TLS connection based on the cloud provider's attestation root cerificate, the attestation document itself does not follow the x509 standard and thus we cannot use the HTTPS API of the user's browser. As a result, the user's WebSocket connection to the enclave is flagged as an insecure connection, and automatically blocked if executed on a HTTPS website. As a workaround, the first registry enclave generates a x509 root certificate, which it uses to issue SSL certificates to any oracle enclave that successfully registers with it. Any additional registry enclave registering via the first registry will obtain the private key of this certificate and is thus able to perform the same role. 
+While the protocol effectively establishes a secure TLS connection based on the cloud provider's attestation root cerificate, the attestation document itself does not follow the x509 standard and thus we cannot use the HTTPS API of the user's browser. As a result, the user's WebSocket connection to the enclave is flagged as an insecure connection, and automatically blocked if executed on a HTTPS website. As a workaround, the first Registry enclave generates a x509 root certificate, which it uses to issue SSL certificates to any Oracle enclave that successfully registers with it. Any additional Registry enclave registering via the first Registry will obtain the private key of this certificate and is thus able to perform the same role. 
 
-Users will have to manually add the root certificate to the trust-store of their browser once, before their browser lets them interact with enclaves. To ensure this process is secure, the registry enclave includes its root certificate in its attestation document such that users can cryptographically verify that the root certificate they install was generated by an enclave running the registry image. Since the private key of the root certificate can never leave the registries for security purposes, it will get lost if all registry enclaves shut off at the same time. A fresh registry enclave will then generate a fresh root certificate, which users have to manually install into their trust stores again.
+Users will have to manually add the root certificate to the trust-store of their browser once, before their browser lets them interact with enclaves. To ensure this process is secure, the Registry enclave includes its root certificate in its attestation document such that users can cryptographically verify that the root certificate they install was generated by an enclave running the Registry image. Since the private key of the root certificate can never leave the registries for security purposes, it will get lost if all Registry enclaves shut off at the same time. A fresh Registry enclave will then generate a fresh root certificate, which users have to manually install into their trust stores again.
 
