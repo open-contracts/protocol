@@ -85,7 +85,7 @@ We proceed to dive into the inner workings of the protocol for a more technical 
        │ Oracle Provider           ┌─────────┐                     ┌──────────┐
        │(Signed by registry)       │Oracle   │──────────────────►  │ Registry │
        │                           │Provider │ attestation, CSR    │ Enclave  │
-       │ calldata                  │(on EC2) │ + provider account  └──────────┘
+       │ Results                   │(on EC2) │ + provider account  └──────────┘
        │ (Signed by Oracle)        └─────────┘                         ▲                             Off-Chain
        │                                 ▲                             │                     ─────────────────
        │                                 │                             │ provider account             On-Chain
@@ -96,7 +96,7 @@ We proceed to dive into the inner workings of the protocol for a more technical 
    ┌──────────────┴─────┐                    ┌────────────┐                                
    │OpenContractsHub.sol│ ────────────────►  │Contract.sol│
    └────────────────────┘   If sigs valid:   └────────────┘
-       │                    submit calldata
+       │                    submit results
        │ $OPN payment   
        ▼ reducing supply   
    ┌─────────────────┐
