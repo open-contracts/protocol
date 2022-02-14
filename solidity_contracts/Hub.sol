@@ -3,14 +3,9 @@ pragma solidity >=0.8.0;
 
 contract OpenContractsHub {
     address public OpenContractsVerifier;
-    address public OpenContractsDevs;
+    address public OpenContractsDevs = 0xc3e9591EDB56DcC951D50CD5002108e9d8968410;
     bool public updatable = true;
     mapping(address => mapping(bytes4 => bytes32)) private ID;
-
-    // upon deployment, we set the addresses of the first hub and of the Open Contracts Devs.
-    constructor() {
-        OpenContractsDevs = msg.sender;
-    }
 
     // the devs may update the verifier and their address, if the hub is still updateable
     function update(address newVerifier, address newDevAddress, bool stayUpdatable) public {
@@ -21,7 +16,7 @@ contract OpenContractsHub {
         updatable = stayUpdatable;
     }
 
-    // allows Open Contracts to declare which function can be called with which oracleID
+    // lets an Open Contract to declare which function can be called with which oracleID
     function setOracleID(bytes4 selector, bytes32 oracleID) public {
         ID[msg.sender][selector] = oracleID;
     }
@@ -31,7 +26,7 @@ contract OpenContractsHub {
         return ID[openContract][selector];
     }
 
-    // forwards call to Open Contract
+    // forwards call to an Open Contract, if it was validated by the Verifier and produced by the right oracleID
     function forwardCall(address payable openContract, bytes32 oracleID, bytes memory call) public payable returns(bool, bytes memory) {
         require(msg.sender == OpenContractsVerifier, "Only calls from the verifier will be forwarded.");
         bytes4 selector = bytes4(call);
