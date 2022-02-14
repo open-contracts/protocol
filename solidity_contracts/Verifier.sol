@@ -6,7 +6,7 @@ contract OpenContractsVerifier {
     using ECDSA for bytes32;
 
     IERC20 private OPN = IERC20(0x621675549452B3DbC603A6a9DceC5C1c2C432705);
-    OpenContractsHub public hub = OpenContractsHub(0x0D75EF6ED06DEE7fA9235a1279B3040D0FDB0217);
+    OpenContractsHub public hub = OpenContractsHub(0xAAfa8f64a9EE68edB350Ea5F2A8839Cf0ad3A57B);
     address public OpenContractsDevs = 0xc3e9591EDB56DcC951D50CD5002108e9d8968410;
     
     bool public updatable = true;
@@ -47,7 +47,7 @@ contract OpenContractsVerifier {
         return hub.forwardCall{value: msg.value, gas: gasleft()}(openContract, oracleID, call);
     }
     
-    // while backdoor is open, allows devs to reset registries
+    // while contract is updatable, allows devs to reset registries and allowed images
     function update(address registry, string memory domain,
                     bytes32 newOracleImage, bytes32 newRegistryImage,
                     address newDevAddress, bool stayUpdatable) public {
@@ -65,10 +65,9 @@ contract OpenContractsVerifier {
 
     // add a new registry enclave
     function addRegistry(address newRegistry, string memory domain, bytes memory registrySignature) public {
-        // will become active once backdoor is closed
         require(!updatable, "Adding new registries will become possible once the verifier is not updatable anymore.");
     
-        // check that a known registry enclave validated the attestation doc of the new enclave
+        // check that a known registry enclave validated the attestation doc of the new registry
         bytes32 msgHash = abi.encodePacked("registry approval", newRegistry, msg.sender).toEthSignedMessageHash();
         address registry = msgHash.recover(registrySignature);
         require(registered[registry][registryImage], "New registry needs to be verified by a known registry!");
