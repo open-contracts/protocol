@@ -6,7 +6,7 @@ contract OpenContractsVerifier {
     using ECDSA for bytes32;
 
     IERC20 private OPN = IERC20(0x621675549452B3DbC603A6a9DceC5C1c2C432705);
-    OpenContractsHub public hub = OpenContractsHub(0xAAfa8f64a9EE68edB350Ea5F2A8839Cf0ad3A57B);
+    OpenContractsHub public hub = OpenContractsHub(0x62C0932E384AE51400a01f56E9D0D7d789a300c4);
     address public OpenContractsDevs = 0xc3e9591EDB56DcC951D50CD5002108e9d8968410;
     
     bool public updatable = true;
@@ -20,12 +20,12 @@ contract OpenContractsVerifier {
 
     // verifies and forwards call to an Open Contract
     function forwardCall(address payable openContract, 
-                         bytes32 oracleID, bytes4 nonce, bytes calldata call, bytes memory oracleSignature,
+                         bytes32 oracleHash, bytes4 nonce, bytes calldata call, bytes memory oracleSignature,
                          address oracleProvider, uint256 oraclePrice, uint256 registryPrice, bytes memory registrySignature)
                          public payable returns(bool, bytes memory data) {
         {
         // check that the oracle message was not submitted already
-        bytes32 oracleMsgHash = abi.encodePacked(oracleID, nonce, call).toEthSignedMessageHash();
+        bytes32 oracleMsgHash = abi.encodePacked(oracleHash, nonce, call).toEthSignedMessageHash();
         require(!calledAlready[oracleMsgHash], "Calls can only be submitted once.");
         calledAlready[oracleMsgHash] = true;
         
@@ -44,7 +44,7 @@ contract OpenContractsVerifier {
         }
 
         // tell Open Contracts Hub to call Open Contract
-        return hub.forwardCall{value: msg.value, gas: gasleft()}(openContract, oracleID, call);
+        return hub.forwardCall{value: msg.value, gas: gasleft()}(openContract, oracleHash, call);
     }
     
     // while contract is updatable, allows devs to reset registries and allowed images
