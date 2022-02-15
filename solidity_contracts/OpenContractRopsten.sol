@@ -1,7 +1,7 @@
 pragma solidity >=0.8.0;
 
 contract OpenContract {
-    OpenContractsHub private hub = OpenContractsHub(0xAAfa8f64a9EE68edB350Ea5F2A8839Cf0ad3A57B);
+    OpenContractsHub private hub = OpenContractsHub(0x059dE2588d076B67901b07A81239286076eC7b89);
  
     // this call tells the Hub which oracleID is allowed for a given contract function
     function setOracleHash(bytes4 selector, bytes32 oracleHash) internal {
