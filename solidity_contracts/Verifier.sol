@@ -5,8 +5,8 @@ contract OpenContractsVerifier {
     using ECDSA for bytes;
     using ECDSA for bytes32;
 
-    IERC20 private OPN = IERC20(0x621675549452B3DbC603A6a9DceC5C1c2C432705);
-    OpenContractsHub public hub = OpenContractsHub(0x62C0932E384AE51400a01f56E9D0D7d789a300c4);
+    IERC20 private OPN = IERC20(0xbb2222094F6fb5363a832409f23d336CB9A40F1A);
+    OpenContractsHub public hub = OpenContractsHub(0x059dE2588d076B67901b07A81239286076eC7b89);
     address public OpenContractsDevs = 0xc3e9591EDB56DcC951D50CD5002108e9d8968410;
     
     bool public updatable = true;
