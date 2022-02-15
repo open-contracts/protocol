@@ -4,8 +4,8 @@ contract OpenContract {
     OpenContractsHub private hub = OpenContractsHub(0xAAfa8f64a9EE68edB350Ea5F2A8839Cf0ad3A57B);
  
     // this call tells the Hub which oracleID is allowed for a given contract function
-    function setOracleID(bytes4 selector, bytes32 oracleID) internal {
-        hub.setOracleID(selector, oracleID);
+    function setOracleHash(bytes4 selector, bytes32 oracleHash) internal {
+        hub.setOracleHash(selector, oracleHash);
     }
  
     modifier requiresOracle {
@@ -16,5 +16,5 @@ contract OpenContract {
 }
 
 interface OpenContractsHub {
-    function setOracleID(bytes4, bytes32) external;
+    function setOracleHash(bytes4, bytes32) external;
 }
