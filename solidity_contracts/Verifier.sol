@@ -10,11 +10,10 @@ contract OpenContractsVerifier {
     address public OpenContractsDevs = 0xc3e9591EDB56DcC951D50CD5002108e9d8968410;
     
     bool public updatable = true;
-    bytes32 oracleImage;
-    bytes32 registryImage;
-    address[] registries;
+    string[] public registryDomains;
+    bytes32 public oracleImage;
+    bytes32 public registryImage;
     mapping(bytes32 => bool) private calledAlready;
-    mapping(address => string) private registryDomain;
     mapping(address => address) private registryProvider;
     mapping(address => mapping(bytes32 => bool)) private registered;
 
@@ -56,10 +55,9 @@ contract OpenContractsVerifier {
         oracleImage = newOracleImage;
         registryImage = newRegistryImage;
         OpenContractsDevs = newDevAddress;
-        registries = [registry];
         registered[registry][registryImage] = true;
         registryProvider[registry] = newDevAddress;
-        registryDomain[registry] = domain;
+        registryDomains = [domain];
         updatable = stayUpdatable;
     }
 
@@ -74,9 +72,8 @@ contract OpenContractsVerifier {
         
         // add new registry enclave
         registered[newRegistry][registryImage] = true;
-        registryDomain[newRegistry] = domain;
         registryProvider[newRegistry] = msg.sender;
-        registries.push(newRegistry);
+        registryDomains.push(domain);
     }
 }
 
