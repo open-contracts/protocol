@@ -1,8 +1,8 @@
 
-// File: https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/utils/introspection/IERC1820Registry.sol
+// File: @openzeppelin/contracts/utils/introspection/IERC1820Registry.sol
 
 
-// OpenZeppelin Contracts v4.3.2 (utils/introspection/IERC1820Registry.sol)
+// OpenZeppelin Contracts v4.4.1 (utils/introspection/IERC1820Registry.sol)
 
 pragma solidity ^0.8.0;
 
@@ -118,10 +118,10 @@ interface IERC1820Registry {
     event ManagerChanged(address indexed account, address indexed newManager);
 }
 
-// File: https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/utils/Context.sol
+// File: @openzeppelin/contracts/utils/Context.sol
 
 
-// OpenZeppelin Contracts v4.3.2 (utils/Context.sol)
+// OpenZeppelin Contracts v4.4.1 (utils/Context.sol)
 
 pragma solidity ^0.8.0;
 
@@ -145,12 +145,12 @@ abstract contract Context {
     }
 }
 
-// File: https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/utils/Address.sol
+// File: @openzeppelin/contracts/utils/Address.sol
 
 
-// OpenZeppelin Contracts v4.3.2 (utils/Address.sol)
+// OpenZeppelin Contracts (last updated v4.5.0) (utils/Address.sol)
 
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.1;
 
 /**
  * @dev Collection of functions related to the address type
@@ -172,17 +172,22 @@ library Address {
      *  - an address where a contract will be created
      *  - an address where a contract lived, but was destroyed
      * ====
+     *
+     * [IMPORTANT]
+     * ====
+     * You shouldn't rely on `isContract` to protect against flash loan attacks!
+     *
+     * Preventing calls from contracts is highly discouraged. It breaks composability, breaks support for smart wallets
+     * like Gnosis Safe, and does not provide security since it can be circumvented by calling from a contract
+     * constructor.
+     * ====
      */
     function isContract(address account) internal view returns (bool) {
-        // This method relies on extcodesize, which returns 0 for contracts in
-        // construction, since the code is only stored at the end of the
-        // constructor execution.
+        // This method relies on extcodesize/address.code.length, which returns 0
+        // for contracts in construction, since the code is only stored at the end
+        // of the constructor execution.
 
-        uint256 size;
-        assembly {
-            size := extcodesize(account)
-        }
-        return size > 0;
+        return account.code.length > 0;
     }
 
     /**
@@ -365,10 +370,10 @@ library Address {
     }
 }
 
-// File: https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/token/ERC20/IERC20.sol
+// File: @openzeppelin/contracts/token/ERC20/IERC20.sol
 
 
-// OpenZeppelin Contracts v4.4.0-rc.0 (token/ERC20/IERC20.sol)
+// OpenZeppelin Contracts (last updated v4.5.0) (token/ERC20/IERC20.sol)
 
 pragma solidity ^0.8.0;
 
@@ -387,13 +392,13 @@ interface IERC20 {
     function balanceOf(address account) external view returns (uint256);
 
     /**
-     * @dev Moves `amount` tokens from the caller's account to `recipient`.
+     * @dev Moves `amount` tokens from the caller's account to `to`.
      *
      * Returns a boolean value indicating whether the operation succeeded.
      *
      * Emits a {Transfer} event.
      */
-    function transfer(address recipient, uint256 amount) external returns (bool);
+    function transfer(address to, uint256 amount) external returns (bool);
 
     /**
      * @dev Returns the remaining number of tokens that `spender` will be
@@ -421,7 +426,7 @@ interface IERC20 {
     function approve(address spender, uint256 amount) external returns (bool);
 
     /**
-     * @dev Moves `amount` tokens from `sender` to `recipient` using the
+     * @dev Moves `amount` tokens from `from` to `to` using the
      * allowance mechanism. `amount` is then deducted from the caller's
      * allowance.
      *
@@ -430,8 +435,8 @@ interface IERC20 {
      * Emits a {Transfer} event.
      */
     function transferFrom(
-        address sender,
-        address recipient,
+        address from,
+        address to,
         uint256 amount
     ) external returns (bool);
 
@@ -450,10 +455,10 @@ interface IERC20 {
     event Approval(address indexed owner, address indexed spender, uint256 value);
 }
 
-// File: https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/token/ERC777/IERC777Sender.sol
+// File: @openzeppelin/contracts/token/ERC777/IERC777Sender.sol
 
 
-// OpenZeppelin Contracts v4.3.2 (token/ERC777/IERC777Sender.sol)
+// OpenZeppelin Contracts v4.4.1 (token/ERC777/IERC777Sender.sol)
 
 pragma solidity ^0.8.0;
 
@@ -488,10 +493,10 @@ interface IERC777Sender {
     ) external;
 }
 
-// File: https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/token/ERC777/IERC777Recipient.sol
+// File: @openzeppelin/contracts/token/ERC777/IERC777Recipient.sol
 
 
-// OpenZeppelin Contracts v4.3.2 (token/ERC777/IERC777Recipient.sol)
+// OpenZeppelin Contracts v4.4.1 (token/ERC777/IERC777Recipient.sol)
 
 pragma solidity ^0.8.0;
 
@@ -526,10 +531,10 @@ interface IERC777Recipient {
     ) external;
 }
 
-// File: https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/token/ERC777/IERC777.sol
+// File: @openzeppelin/contracts/token/ERC777/IERC777.sol
 
 
-// OpenZeppelin Contracts v4.3.2 (token/ERC777/IERC777.sol)
+// OpenZeppelin Contracts v4.4.1 (token/ERC777/IERC777.sol)
 
 pragma solidity ^0.8.0;
 
@@ -722,10 +727,10 @@ interface IERC777 {
     event RevokedOperator(address indexed operator, address indexed tokenHolder);
 }
 
-// File: https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/token/ERC777/ERC777.sol
+// File: @openzeppelin/contracts/token/ERC777/ERC777.sol
 
 
-// OpenZeppelin Contracts v4.3.2 (token/ERC777/ERC777.sol)
+// OpenZeppelin Contracts (last updated v4.5.0) (token/ERC777/ERC777.sol)
 
 pragma solidity ^0.8.0;
 
@@ -983,6 +988,9 @@ contract ERC777 is Context, IERC777, IERC20 {
     /**
      * @dev See {IERC20-approve}.
      *
+     * NOTE: If `value` is the maximum `uint256`, the allowance is not updated on
+     * `transferFrom`. This is semantically equivalent to an infinite approval.
+     *
      * Note that accounts cannot have allowance issued by their operators.
      */
     function approve(address spender, uint256 value) public virtual override returns (bool) {
@@ -993,6 +1001,9 @@ contract ERC777 is Context, IERC777, IERC20 {
 
     /**
      * @dev See {IERC20-transferFrom}.
+     *
+     * NOTE: Does not update the allowance if the current allowance
+     * is the maximum `uint256`.
      *
      * Note that operator and allowance concepts are orthogonal: operators cannot
      * call `transferFrom` (unless they have allowance), and accounts with
@@ -1012,11 +1023,9 @@ contract ERC777 is Context, IERC777, IERC20 {
 
         _callTokensToSend(spender, holder, recipient, amount, "", "");
 
-        _move(spender, holder, recipient, amount, "", "");
+        _spendAllowance(holder, spender, amount);
 
-        uint256 currentAllowance = _allowances[holder][spender];
-        require(currentAllowance >= amount, "ERC777: transfer amount exceeds allowance");
-        _approve(holder, spender, currentAllowance - amount);
+        _move(spender, holder, recipient, amount, "", "");
 
         _callTokensReceived(spender, holder, recipient, amount, "", "", false);
 
@@ -1182,7 +1191,7 @@ contract ERC777 is Context, IERC777, IERC20 {
         address holder,
         address spender,
         uint256 value
-    ) internal {
+    ) internal virtual {
         require(holder != address(0), "ERC777: approve from the zero address");
         require(spender != address(0), "ERC777: approve to the zero address");
 
@@ -1242,6 +1251,28 @@ contract ERC777 is Context, IERC777, IERC20 {
     }
 
     /**
+     * @dev Spend `amount` form the allowance of `owner` toward `spender`.
+     *
+     * Does not update the allowance amount in case of infinite allowance.
+     * Revert if not enough allowance is available.
+     *
+     * Might emit an {Approval} event.
+     */
+    function _spendAllowance(
+        address owner,
+        address spender,
+        uint256 amount
+    ) internal virtual {
+        uint256 currentAllowance = allowance(owner, spender);
+        if (currentAllowance != type(uint256).max) {
+            require(currentAllowance >= amount, "ERC777: insufficient allowance");
+            unchecked {
+                _approve(owner, spender, currentAllowance - amount);
+            }
+        }
+    }
+
+    /**
      * @dev Hook that is called before any token transfer. This includes
      * calls to {send}, {transfer}, {operatorSend}, minting and burning.
      *
@@ -1268,13 +1299,10 @@ contract ERC777 is Context, IERC777, IERC20 {
 pragma solidity >=0.8.0;
 
 
-contract OPNToken is ERC777 {
-    constructor() ERC777("Open Contracts", "OPN", new address[](0)) {
-        uint256 initialSupply = 100000000 * 1e18;
+contract OPN is ERC777 {
+    address[] noDefaultOperators;
+    constructor() ERC777("Open Contracts", "OPN", noDefaultOperators) {
+        uint256 initialSupply = 1000000000 * 10**18;
         _mint(msg.sender, initialSupply, "", "");
-    }
-    
-    function mint(uint256 amount) public {
-        _mint(msg.sender, amount, "", "");
     }
 }
