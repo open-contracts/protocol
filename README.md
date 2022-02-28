@@ -10,6 +10,10 @@ Interact via any of the following sites:
 - for Optimism (bridged from mainnet): https://optimistic.etherscan.io/address/0x8dfb2aaB408BC6140c65E1Af0D4Be94DD767d9DA
 - for Ropsten (separate token, supports minting): https://ropsten.etherscan.io/address/0xbb2222094F6fb5363a832409f23d336CB9A40F1A
 
+Can be purchased via Uniswap:
+- On Mainnet: https://app.uniswap.org/#/swap?inputCurrency=eth&outputCurrency=0xa2d9519A8692De6E47fb9aFCECd67737c288737F&chain=mainnet&exactAmount=.1&exactField=output
+- On Optimism: https://app.uniswap.org/#/swap?inputCurrency=eth&outputCurrency=0x8dfb2aaB408BC6140c65E1Af0D4Be94DD767d9DA&exactAmount=3&exactField=output&chain=optimism
+
 # Open Contracts Verifier
 
 Interact via any of the following sites:
