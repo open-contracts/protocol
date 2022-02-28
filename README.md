@@ -1,4 +1,4 @@
-# Ethereum Contracts of the Open Contracts Protocol
+# The Open Contracts Protocol on chain
 The ethereum smart contracts used by the Open Contracts protocol.
 
 
