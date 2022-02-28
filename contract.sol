@@ -1,90 +1,91 @@
-// File: contracts/Hub.sol
-
+// File: contracts/Verifier.sol
 pragma solidity >=0.8.0;
 
-
-contract OpenContractsHub {
+contract OpenContractsVerifier {
     using ECDSA for bytes;
     using ECDSA for bytes32;
 
-    IERC20 private OPN = IERC20(0x6f358829f395B339B7A99D8a857D541524C6E105);
-    OpenContractsForwarder public forwarder = OpenContractsForwarder(0xACf12733cBa963201Fdd1757b4D7A062AD096dB1);
-    address  public OpenContractsDevs = 0xc3e9591EDB56DcC951D50CD5002108e9d8968410;
+    IERC20 private OPN = IERC20(0x8dfb2aaB408BC6140c65E1Af0D4Be94DD767d9DA);
+    OpenContractsHub public hub = OpenContractsHub(0xe83ca210b7800CeC7331de7BEF3EabF8C794c4D1);
+    address public OpenContractsDevs = 0xc3e9591EDB56DcC951D50CD5002108e9d8968410;
     
-    uint256 public price;
-    bytes4[] public registryIpList;
-    bool public backdoorOpen = true;
-    
-    mapping(address => bytes4) private registryIp;
-    mapping(address => address) private enclaveProvider;
+    bool public updatable = true;
+    string[] public registryDomains;
+    bytes32 public oracleImage;
+    bytes32 public registryImage;
     mapping(bytes32 => bool) private calledAlready;
+    mapping(address => address) private registryProvider;
+    mapping(address => mapping(bytes32 => bool)) private registered;
 
-    constructor() {
-        price = 3e18;
-    }
-
-    // add a new regstry enclave
-    function addRegistryEnclave(address newEnclave, address payable newProvider, bytes4 newIp, bytes memory registrySignature) public {
-        
-        // check that a known registry enclave validated the attestation doc of the new enclave
-        bytes32 msgHash = abi.encodePacked(newEnclave, newIp, newProvider).toEthSignedMessageHash();
-        address registryEnclave = msgHash.recover(registrySignature);
-        require(registryIp[registryEnclave] != bytes4(0), "New registry enclave requires approval from known registry enclave!");
-        
-        // add new registry enclave
-        registryIpList.push(newIp);
-        registryIp[newEnclave] = newIp;
-        enclaveProvider[newEnclave] = newProvider;
-    }
-
-
-    // forwards call = abi.encodeWithSignature("functionName(string,uint256)", "stringArg", 123) to destination contract
-    function forwardCall(address payable destinationContract, bytes4 nonce, bytes calldata call,
-                         bytes memory oracleSignature, address payable oracleProvider, bytes memory registrySignature) public payable returns(bool, bytes memory data) {
-        
-        // check that encodedCall was signed by an oracle enclave whose attestation doc was validated by a known registry enclave
-        bytes32 oracleMsgHash = abi.encodePacked(nonce, call).toEthSignedMessageHash();
-        address oracleEnclave = oracleMsgHash.recover(oracleSignature);
-        address registryEnclave = abi.encodePacked(oracleEnclave, oracleProvider).toEthSignedMessageHash().recover(registrySignature);
-        require(registryIp[registryEnclave] != bytes4(0), "Oracle enclave needs to have been validated by a known registry enclave!");
-        registryIpList.push(registryIp[registryEnclave]);
-        
-        // send payments to the recipients 
-        require(OPN.allowance(msg.sender, address(this)) >= price, "Sender needs to deposit enough $OPN");
-        OPN.transferFrom(msg.sender, 0x000000000000000000000000000000000000dEaD, price/5);   // 20 % burned
-        OPN.transferFrom(msg.sender, payable(enclaveProvider[registryEnclave]), price/10);   // 10 % to registry
-        OPN.transferFrom(msg.sender, oracleProvider, price/10*7);                            // 70 % to oracle
-        
-        // call destination contract
+    // verifies and forwards call to an Open Contract
+    function forwardCall(address payable openContract, 
+                         bytes32 oracleHash, bytes4 nonce, bytes calldata call, bytes memory oracleSignature,
+                         address oracleProvider, uint256 oraclePrice, uint256 registryPrice, bytes memory registrySignature)
+                         public payable returns(bool, bytes memory data) {
+        {
+        // check that the oracle message was not submitted already
+        bytes32 oracleMsgHash = abi.encodePacked(oracleHash, nonce, call).toEthSignedMessageHash();
         require(!calledAlready[oracleMsgHash], "Calls can only be submitted once.");
         calledAlready[oracleMsgHash] = true;
-        return forwarder.forwardCall{value: msg.value, gas: gasleft()}(destinationContract, call);
+        
+        // check that the oracle message was signed by an enclave whose attestation doc was validated by a known registry enclave
+        address oracle = oracleMsgHash.recover(oracleSignature);
+        address registry = abi.encodePacked(oracleImage, oracle, oracleProvider, oraclePrice, registryPrice)
+        .toEthSignedMessageHash().recover(registrySignature);
+        require(registered[registry][registryImage], "Oracle enclave needs to have been validated by a known registry enclave.");
+        
+        // send payments to the recipients
+        uint256 burn = (oraclePrice + registryPrice) / 5; // add 20 % surcharge to burn $OPN 
+        require(OPN.allowance(msg.sender, address(this)) >= burn * 6, "Sender needs to approve enough $OPN.");
+        OPN.transferFrom(msg.sender, 0x000000000000000000000000000000000000dEaD, burn);
+        OPN.transferFrom(msg.sender, registryProvider[registry], registryPrice);
+        OPN.transferFrom(msg.sender, oracleProvider, oraclePrice);
+        }
+
+        // tell Open Contracts Hub to call Open Contract
+        return hub.forwardCall{value: msg.value, gas: gasleft()}(openContract, oracleHash, call);
     }
     
+    // while contract is updatable, allows devs to reset registries and allowed images
+    function update(address registry, string memory domain,
+                    bytes32 newOracleImage, bytes32 newRegistryImage,
+                    address newDevAddress, bool stayUpdatable) public {
+        require(updatable, "The verifier cannot be updated anymore.");
+        require(msg.sender == OpenContractsDevs, "Only the OpenContractsDevs can update the verifier.");
+        oracleImage = newOracleImage;
+        registryImage = newRegistryImage;
+        OpenContractsDevs = newDevAddress;
+        registered[registry][registryImage] = true;
+        registryProvider[registry] = newDevAddress;
+        registryDomains = [domain];
+        updatable = stayUpdatable;
+    }
+
+    // add a new registry enclave
+    function addRegistry(address newRegistry, string memory domain, bytes memory registrySignature) public {
+        require(!updatable, "Adding new registries will become possible once the verifier is not updatable anymore.");
     
-    // while backdoor is open, allows devs to register new root registries
-    function backdoor(address newRegistry, bytes4 newIp, address newDevs, bool close, uint256 newPrice) public {
-        require(backdoorOpen, "Backdoor was closed.");
-        backdoorOpen = !close;
-        OpenContractsDevs = newDevs;
-        registryIpList.push(newIp);
-        enclaveProvider[newRegistry] = newDevs;
-        registryIp[newRegistry] = newIp;
-        price = newPrice;
+        // check that a known registry enclave validated the attestation doc of the new registry
+        bytes32 msgHash = abi.encodePacked("registry approval", newRegistry, msg.sender).toEthSignedMessageHash();
+        address registry = msgHash.recover(registrySignature);
+        require(registered[registry][registryImage], "New registry needs to be verified by a known registry!");
+        
+        // add new registry enclave
+        registered[newRegistry][registryImage] = true;
+        registryProvider[newRegistry] = msg.sender;
+        registryDomains.push(domain);
     }
 }
-
 
 
 interface IERC20 {
     function allowance(address owner, address spender) external view returns (uint256);
     function transferFrom(address sender, address recipient, uint256 amount) external returns (bool);
-    
 }
 
 
-interface OpenContractsForwarder {
-    function forwardCall(address, bytes memory) external payable returns(bool, bytes memory);
+interface OpenContractsHub {
+    function forwardCall(address, bytes32, bytes memory) external payable returns(bool, bytes memory);
 }
 
 
