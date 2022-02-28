@@ -2,6 +2,7 @@
 The ethereum smart contracts used by the Open Contracts protocol. All contracts are verified by etherscan.
 
 While the OPN token is an erc20 token on mainnet, the verifier and hub are only (and thus Open Contracts can only be) deployed on Optimism and Ropsten testnet for now. #L222
+A copies of the source code exists throughout this repo, but of course you should refer to Etherscan as the ground truth for the contract logic.
 
 ## Open Contracts "OPN" Token 
 
