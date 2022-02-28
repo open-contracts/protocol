@@ -1,193 +1,218 @@
-{"ropsten":{
-        "name": "Open Contracts Hub",
-        "address": "0x232AA2fc3Bc3Ec5D00483ac827f4612DA45884BE",
-        "abi" : [
-	{
-		"inputs": [],
-		"stateMutability": "nonpayable",
-		"type": "constructor"
-	},
-	{
-		"inputs": [],
-		"name": "OpenContractsDevs",
-		"outputs": [
-			{
-				"internalType": "address",
-				"name": "",
-				"type": "address"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "newEnclave",
-				"type": "address"
-			},
-			{
-				"internalType": "address payable",
-				"name": "newProvider",
-				"type": "address"
-			},
-			{
-				"internalType": "bytes4",
-				"name": "newIp",
-				"type": "bytes4"
-			},
-			{
-				"internalType": "bytes",
-				"name": "registrySignature",
-				"type": "bytes"
-			}
-		],
-		"name": "addRegistryEnclave",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "newRegistry",
-				"type": "address"
-			},
-			{
-				"internalType": "bytes4",
-				"name": "newIp",
-				"type": "bytes4"
-			},
-			{
-				"internalType": "address",
-				"name": "newDevs",
-				"type": "address"
-			},
-			{
-				"internalType": "bool",
-				"name": "close",
-				"type": "bool"
-			},
-			{
-				"internalType": "uint256",
-				"name": "newPrice",
-				"type": "uint256"
-			}
-		],
-		"name": "backdoor",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "backdoorOpen",
-		"outputs": [
-			{
-				"internalType": "bool",
-				"name": "",
-				"type": "bool"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address payable",
-				"name": "destinationContract",
-				"type": "address"
-			},
-			{
-				"internalType": "bytes4",
-				"name": "nonce",
-				"type": "bytes4"
-			},
-			{
-				"internalType": "bytes",
-				"name": "call",
-				"type": "bytes"
-			},
-			{
-				"internalType": "bytes",
-				"name": "oracleSignature",
-				"type": "bytes"
-			},
-			{
-				"internalType": "address payable",
-				"name": "oracleProvider",
-				"type": "address"
-			},
-			{
-				"internalType": "bytes",
-				"name": "registrySignature",
-				"type": "bytes"
-			}
-		],
-		"name": "forwardCall",
-		"outputs": [
-			{
-				"internalType": "bool",
-				"name": "",
-				"type": "bool"
-			},
-			{
-				"internalType": "bytes",
-				"name": "data",
-				"type": "bytes"
-			}
-		],
-		"stateMutability": "payable",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "forwarder",
-		"outputs": [
-			{
-				"internalType": "contract OpenContractsForwarder",
-				"name": "",
-				"type": "address"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "price",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "index",
-				"type": "uint256"
-			}
-		],
-		"name": "registryIpList",
-		"outputs": [
-			{
-				"internalType": "bytes4",
-				"name": "",
-				"type": "bytes4"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	}
-]
-}
+{
+  "name": "Open Contracts Verifier",
+  "address": {
+    "ropsten": "0x5399a2Feb6220c06c75A04117B5E56C6a399ea11",
+    "optimism": "0x0eda229fada048c551cef30a7eaabed98a7f1f46"
+  },
+  "abi": [
+    {
+      "inputs": [],
+      "name": "OpenContractsDevs",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "newRegistry",
+          "type": "address"
+        },
+        {
+          "internalType": "string",
+          "name": "domain",
+          "type": "string"
+        },
+        {
+          "internalType": "bytes",
+          "name": "registrySignature",
+          "type": "bytes"
+        }
+      ],
+      "name": "addRegistry",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address payable",
+          "name": "openContract",
+          "type": "address"
+        },
+        {
+          "internalType": "bytes32",
+          "name": "oracleHash",
+          "type": "bytes32"
+        },
+        {
+          "internalType": "bytes4",
+          "name": "nonce",
+          "type": "bytes4"
+        },
+        {
+          "internalType": "bytes",
+          "name": "call",
+          "type": "bytes"
+        },
+        {
+          "internalType": "bytes",
+          "name": "oracleSignature",
+          "type": "bytes"
+        },
+        {
+          "internalType": "address",
+          "name": "oracleProvider",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "oraclePrice",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "registryPrice",
+          "type": "uint256"
+        },
+        {
+          "internalType": "bytes",
+          "name": "registrySignature",
+          "type": "bytes"
+        }
+      ],
+      "name": "forwardCall",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        },
+        {
+          "internalType": "bytes",
+          "name": "data",
+          "type": "bytes"
+        }
+      ],
+      "stateMutability": "payable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "hub",
+      "outputs": [
+        {
+          "internalType": "contract OpenContractsHub",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "oracleImage",
+      "outputs": [
+        {
+          "internalType": "bytes32",
+          "name": "",
+          "type": "bytes32"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "registryDomains",
+      "outputs": [
+        {
+          "internalType": "string",
+          "name": "",
+          "type": "string"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "registryImage",
+      "outputs": [
+        {
+          "internalType": "bytes32",
+          "name": "",
+          "type": "bytes32"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "updatable",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "registry",
+          "type": "address"
+        },
+        {
+          "internalType": "string",
+          "name": "domain",
+          "type": "string"
+        },
+        {
+          "internalType": "bytes32",
+          "name": "newOracleImage",
+          "type": "bytes32"
+        },
+        {
+          "internalType": "bytes32",
+          "name": "newRegistryImage",
+          "type": "bytes32"
+        },
+        {
+          "internalType": "address",
+          "name": "newDevAddress",
+          "type": "address"
+        },
+        {
+          "internalType": "bool",
+          "name": "stayUpdatable",
+          "type": "bool"
+        }
+      ],
+      "name": "update",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ]
 }
