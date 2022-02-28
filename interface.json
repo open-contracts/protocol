@@ -1,102 +1,147 @@
-{"ropsten": {
-  "name": "Open Contracts Forwarder",
-  "address": "0xACf12733cBa963201Fdd1757b4D7A062AD096dB1",
+{
+  "name": "Open Contracts Hub",
+  "address": {
+    "ropsten": "0x5399a2Feb6220c06c75A04117B5E56C6a399ea11",
+    "optimism": "0xe83ca210b7800cec7331de7bef3eabf8c794c4d1"
+  },
   "abi": [
-	{
-		"inputs": [],
-		"stateMutability": "nonpayable",
-		"type": "constructor"
-	},
-	{
-		"inputs": [],
-		"name": "completed",
-		"outputs": [
-			{
-				"internalType": "bool",
-				"name": "",
-				"type": "bool"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "devAddress",
-		"outputs": [
-			{
-				"internalType": "address",
-				"name": "",
-				"type": "address"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address payable",
-				"name": "destinationContract",
-				"type": "address"
-			},
-			{
-				"internalType": "bytes",
-				"name": "call",
-				"type": "bytes"
-			}
-		],
-		"name": "forwardCall",
-		"outputs": [
-			{
-				"internalType": "bool",
-				"name": "",
-				"type": "bool"
-			},
-			{
-				"internalType": "bytes",
-				"name": "",
-				"type": "bytes"
-			}
-		],
-		"stateMutability": "payable",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "hub",
-		"outputs": [
-			{
-				"internalType": "address",
-				"name": "",
-				"type": "address"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "newHub",
-				"type": "address"
-			},
-			{
-				"internalType": "address",
-				"name": "newDevAddress",
-				"type": "address"
-			},
-			{
-				"internalType": "bool",
-				"name": "complete",
-				"type": "bool"
-			}
-		],
-		"name": "update",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	}
-]
-}}
+    {
+      "inputs": [],
+      "name": "OpenContractsDevs",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "OpenContractsVerifier",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address payable",
+          "name": "openContract",
+          "type": "address"
+        },
+        {
+          "internalType": "bytes32",
+          "name": "oracleHash",
+          "type": "bytes32"
+        },
+        {
+          "internalType": "bytes",
+          "name": "call",
+          "type": "bytes"
+        }
+      ],
+      "name": "forwardCall",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        },
+        {
+          "internalType": "bytes",
+          "name": "",
+          "type": "bytes"
+        }
+      ],
+      "stateMutability": "payable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "openContract",
+          "type": "address"
+        },
+        {
+          "internalType": "bytes4",
+          "name": "selector",
+          "type": "bytes4"
+        }
+      ],
+      "name": "getOracleHash",
+      "outputs": [
+        {
+          "internalType": "bytes32",
+          "name": "",
+          "type": "bytes32"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes4",
+          "name": "selector",
+          "type": "bytes4"
+        },
+        {
+          "internalType": "bytes32",
+          "name": "oracleHash",
+          "type": "bytes32"
+        }
+      ],
+      "name": "setOracleHash",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "updatable",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "newVerifier",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "newDevAddress",
+          "type": "address"
+        },
+        {
+          "internalType": "bool",
+          "name": "stayUpdatable",
+          "type": "bool"
+        }
+      ],
+      "name": "update",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ]
+}
