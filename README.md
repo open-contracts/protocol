@@ -16,7 +16,7 @@ Can be purchased via Uniswap:
 - On Mainnet: https://app.uniswap.org/#/swap?inputCurrency=eth&outputCurrency=0xa2d9519A8692De6E47fb9aFCECd67737c288737F&chain=mainnet&exactAmount=.1&exactField=output
 - On Optimism: https://app.uniswap.org/#/swap?inputCurrency=eth&outputCurrency=0x8dfb2aaB408BC6140c65E1Af0D4Be94DD767d9DA&exactAmount=3&exactField=output&chain=optimism
 
-# Open Contracts Verifier
+## Open Contracts Verifier
 
 Interact via any of the following sites:
 - for both Optimism and Ropsten: https://dapp.opencontracts.io/#/open-contracts/ethereum-protocol/verifier
