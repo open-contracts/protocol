@@ -1,5 +1,5 @@
 # The Open Contracts Protocol on chain
-The ethereum smart contracts used by the Open Contracts protocol.
+The ethereum smart contracts used by the Open Contracts protocol. All contracts are verified by etherscan.
 
 
 ## Open Contracts "OPN" Token 
