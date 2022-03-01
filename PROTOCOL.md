@@ -74,11 +74,11 @@ We proceed to dive into the inner workings of the protocol for a more technical 
 │(browser)│────────────────────► │ ┌─────────┐ │ data for contract │             │
 │         │                      │ │oracle.py│ │ ── ── ── ── ── ── └─────────────┘
 │         │ ◄────────────────────│ └─────────┘ │ 
-│         │ results,  signatures │             │
+│         │ results, addrs, sigs |             │
 └─────────┘ ── ── ── ── ── ── ── └─────────────┘ ◄──────────────────┐ If attestation valid:
        │                                │                           │
        │                                │attestation                │ registry signature of 
-       │ $OPN payment                   │CSR (=cert sign request)   │ {oracle enclave pubkey, oracle provider}
+       │ $OPN payment                   │                           │ {oracle enclave pubkey, oracle provider}
        │                                │                           │
        │ oracle enclave pubkey          ▼                           │ 
        │ oracle provider address   ┌─────────┐                     ┌──────────┐
@@ -87,7 +87,7 @@ We proceed to dive into the inner workings of the protocol for a more technical 
        │ results, oracleHash       │(on EC2) │ + provider address  └──────────┘
        │ (signed by Oracle)        └─────────┘                         ▲                             Off-Chain
    ┌───┴────────────────┐                ▲                             │                     ─────────────────
-   │    Verifier.sol    │                │                             │ provider account             On-Chain
+   │    Verifier.sol    │                │                             │ provider address             On-Chain
    └────────────────────┘         $OPN   │                             │        
     │ if sigs ok:     ┌──────────────────┴──────────────────────►  ┌───┴──────────────┐
     │ results         │ ┌──────────────────────────────────────────│ Registry Provider│
