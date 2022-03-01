@@ -82,27 +82,31 @@ We proceed to dive into the inner workings of the protocol for a more technical 
        │                                │                           │
        │ oracle enclave pubkey          ▼                           │ 
        │ oracle provider address   ┌─────────┐                     ┌──────────┐
-       │(signed by Registry)       │Oracle   │──────────────────►  │ Registry │
+       │(signed by registry encl)  │Oracle   │──────────────────►  │ Registry │
        │                           │Provider │ attestation,        │ Enclave  │
        │ results, oracleHash       │(on EC2) │ + provider address  └──────────┘
-       │ (signed by Oracle)        └─────────┘                         ▲                             Off-Chain
+       │ (signed by oracle encl)   └─────────┘                         ▲                             Off-Chain
    ┌───┴────────────────┐                ▲                             │                     ─────────────────
-   │    Verifier.sol    │                │                             │ provider address             On-Chain
-   └────────────────────┘         $OPN   │                             │        
-    │ if sigs ok:     ┌──────────────────┴──────────────────────►  ┌───┴──────────────┐
-    │ results         │ ┌──────────────────────────────────────────│ Registry Provider│
-    ▼ oracleHash      │ ▼                          registration tx └──────────────────┘ 
-   ┌──────────────────┴─┐ declare oracleHash ┌────────────┐                                
-   │       Hub.sol      │ ◄──────────────────│Contract.sol│
-   └────────────────────┘ ────────────────►  └────────────┘
-     │                  if oracleHash ok: 
-     │ $OPN payment     submit results
-     ▼ reducing supply   
-   ┌─────────────────┐
-   │ Burner Address  │
+ ┌─│    Verifier.sol    │ ───────────────┴──────────────────────────┐  │ provider address             On-Chain
+ │ └────────────────────┘         $OPN payment                      ▼  │        
+ │  │ if sigs ok:       ▲                                          ┌───┴──────────────┐
+ │  │ results           └──────────────────────────────────────────│ Registry Provider│
+ │  ▼ oracleHash                                   registration tx └──────────────────┘ 
+ │ ┌────────────────────┐ declare oracleHash ┌────────────┐                                
+ │ │       Hub.sol      │ ◄──────────────────│Contract.sol│
+ │ └────────────────────┘ ────────────────►  └────────────┘
+ │                         if oracleHash ok: 
+ │ $OPN payment            submit results
+ │ reducing supply   
+ │ ┌─────────────────┐
+ └►│ Burner Address  │
    └─────────────────┘
 ```
-The Oracle and Registry providers are customers of the cloud provider (for now: AWS), who rent an enclave-capable cloud instance from them, install our open-source code and let it participate in the protocol. `Contract.sol` is the Solidty part of the Open Contract, executed on the Ethereum blockchain. `Oracle.py` is the python part (and its dependencies), which is executed by the Oracle enclave and describes the logic by which it requests data from some website, and computes the results. The results are initially submitted to the `OpenContractsHub.sol`, the core contract of our protocol, which verifies that the results were computed by a authentic Oracle enclave, by checking that the Oracle enclave was able to prove its authenticity to the Registry enclave. The  `OpenContractsHub.sol` also verifies that the user reimburses the enclave providers via the $OPN token, while adding a 20% surcharge of $OPN that is removed from circulation.
+The Oracle and Registry providers are customers of the cloud provider (for now: AWS), who rent an enclave-capable cloud instance from them, install our open-source code and let it participate in the protocol. `Contract.sol` is the Solidty part of the Open Contract, executed on the Ethereum blockchain. `Oracle.py` is the python part (and its dependencies), which is executed by the Oracle enclave and describes the logic by which it requests data from some website, and computes the results. The results are initially submitted to the `Verifier.sol` which checks the validity of the signatures to convince itself that:
+1. a known (=previously registered) registry enclave verified the attestation doc of a correctly setup oracle enclave
+2. the results came from an `oracle.py` script with the right `oracleHash=hash(oracle.py, dependencies)`
+3. The  user reimburses the enclave providers via the OPN token, while adding a 20% surcharge of [OPN](https://app.uniswap.org/#/swap?inputCurrency=eth&outputCurrency=0xa2d9519A8692De6E47fb9aFCECd67737c288737F&chain=mainnet&exactAmount=.1&exactField=output) that is removed from circulation.
+It then forwards the results to the Hub, which forwards them to a specific open contract function if the `oracleHash` was whitelisted for this function. The Verifier and Hub are separate contracts, allowing us to replace the former with updated versions without resetting the `oracleHash` whitelists of existing contracts.
 
 ## 1. Cryptographic Attestation Mechanism
 
@@ -114,11 +118,11 @@ The attestation process lies at the heart of how smart contracts, users, or encl
 
 By verifying the validity of the signature and its certificate path relative to the enclave provider's root certificate, users/contracts/enclaves can convince themselves that a given public key was generated by a particular enclave image, as identified by its hash. Any data signed by this public key must therefore come from inside an enclave running a particular image.
 
-Unfortunately, the format of the AWS Nitro attestation document is not particularly suited for direct verification by the EVM, requiring signature verification on elliptic curves other than Ethereum's Secp256k1 curve as well as deserialization and certificate parsing operations, which exceed the computational capabilities of the EVM. We therefore require a way for the Open Contracts "Hub", the core Ethereum contract of our protocol, to offload this computation away from the EVM.
+Unfortunately, the format of the AWS Nitro attestation document is not particularly suited for direct verification by the EVM, requiring signature verification on elliptic curves other than Ethereum's Secp256k1 curve as well as deserialization and certificate parsing operations, which exceed the computational capabilities of the EVM. We therefore require a way for the Verifier contract to offload this computation away from the EVM.
 
-Currently, the Hub will do so by offloading this computation into a special _Registry_ enclave. This is a single enclave which is runs a special image different from that of the Oracle enclaves. It is not intended to be shut down, such that its public key always stays the same. Its main job is to verify the attestation documents of fresh Oracles, which connect to the Registry right at launch and submit their attestation document. The Registry verifies that the Oracle's attestation is valid and contains the right image hash, extracts its public key, signs it in an EVM-friendly way, and returns the signature to the fresh Oracle. The Oracle can now register its public key with the Hub, which can verify that it is signed with the (hardcoded) public key of the (first) Registry enclave. Before trusting the protocol, users can just check the Registry's public key once - off-chain - by verifying its attestation document. Anyone can launch an additional Registry enclave by obtaining a signature of its public key from an existing Registry (just like an Oracle would), and submitting its signed public key to the Hub.
+Currently, the Verifier will do so by offloading this computation into a special _Registry_ enclave. This is a single enclave which is runs a special image different from that of the Oracle enclaves. It is not intended to be shut down, such that its public key always stays the same. Its main job is to verify the attestation documents of fresh Oracles, which connect to the Registry right at launch and submit their attestation document. The Registry verifies that the Oracle's attestation is valid and contains the right image hash, extracts its public key, signs it in an EVM-friendly way, and returns the signature to the fresh Oracle. The Oracle can now register its public key with the Hub, which can verify that it is signed with the (hardcoded) public key of the (first) Registry enclave. Before trusting the protocol, users can just check the Registry's public key once - off-chain - by verifying its attestation document. Anyone can launch an additional Registry enclave by obtaining a signature of its public key from an existing Registry (just like an Oracle would), and submitting its signed public key to the Hub.
 
-This current design has the disadvantage that if all Registries went offline at the same time, the protocol could only recover if someone launched a new Hub - which would not be accepted by previous Open Contracts who would effectively turn blind. The developers therefore currently maintain a centralized backdoor to the Hub, which allows them to manually register a new Registry in this event. The same backdoor is currently also used to deliver bugfixes as they arise, by changing the Onclave and Registry image hashes permitted by the protocol. Once the security of the images is established, this backdoor will be removed. By then, new Registry enclaves could register with the Hub directly, which would verify their attestation document by an general-purpose optimistic rollup such as [Descartes Rollup](https://medium.com/cartesi/scalable-smart-contracts-on-ethereum-built-with-mainstream-software-stacks-8ad6f8f17997) or [Truebit](https://truebit.io/).
+This current design has the disadvantage that if all Registries went offline at the same time, the protocol could only recover if someone launched a new Hub and Verifier - which would not be accepted by previous Open Contracts who would effectively turn blind. The developers therefore currently maintain a centralized backdoor to the Hub, which allows them to manually register a new Registry in this event. The same backdoor is currently also used to deliver bugfixes as they arise, by changing the Onclave and Registry image hashes permitted by the protocol. Once the security of the images is established, this backdoor will be removed. By then, new Registry enclaves might be able to register with the Verifier directly, which could verify their attestation document by an general-purpose optimistic rollup such as [Descartes Rollup](https://github.com/open-contracts/cartesi-attestation-verification) or [Truebit](https://github.com/open-contracts/verify-nitro-attestation).
 
 
 
@@ -152,10 +156,8 @@ The Hub contract is at the heart of the protocol. It serves multiple roles at on
  - it transfers $OPN from the user to the Oracle provider, the Registry provider, and to the [0xdead burner address](https://etherscan.io/address/0x000000000000000000000000000000000000dead)
  - if everything checks out, it forwards the `oracleHash` and the results to the Open Contract, calling the function specified by the user
 
-The $OPN token conforms to the regular ERC20/ERC777 token standards. The enforced burning of $OPN at every Hub transaction aims to create a deflationary pressure that increases with the overall protocol activity - incentivizing early $OPN liquidity on the one hand that is necessary to incentivize enclave providers on the other hand, who ultimately have to rent out the instances from AWS or Azure. 
+The [OPN](https://app.uniswap.org/#/swap?inputCurrency=eth&outputCurrency=0xa2d9519A8692De6E47fb9aFCECd67737c288737F&chain=mainnet&exactAmount=.1&exactField=output) token conforms to the regular ERC20 and RC777 token standards. The enforced burning of OPN at every Hub transaction aims to create a deflationary pressure that increases with the overall protocol activity - incentivizing early OPN liquidity on the one hand that is necessary to for enclave providers to cash out on the other hand, who ultimately have to rent out the instances from AWS or Azure. 
 
 ## 4. Compatibility with modern web browsers' security policies
 
-While the protocol effectively establishes a secure TLS connection based on the cloud provider's attestation root cerificate, the attestation document itself does not follow the x509 standard and thus we cannot use the HTTPS API of the user's browser. As a result, the user's WebSocket connection to the enclave is flagged as an insecure connection, and automatically blocked if executed on a HTTPS website. As a workaround, the first Registry enclave generates a x509 root certificate, which it uses to issue SSL certificates to any Oracle enclave that successfully registers with it. Any additional Registry enclave registering via the first Registry will obtain the private key of this certificate and is thus able to perform the same role. 
-
-Users will have to manually add the root certificate to the trust-store of their browser once, before their browser lets them interact with enclaves. To ensure this process is secure, the Registry enclave includes its root certificate in its attestation document such that users can cryptographically verify that the root certificate they install was generated by an enclave running the Registry image. Since the private key of the root certificate can never leave the registries for security purposes, it will get lost if all Registry enclaves shut off at the same time. A fresh Registry enclave will then generate a fresh root certificate, which users have to manually install into their trust stores again.
+While the protocol effectively establishes a secure TLS connection based on the cloud provider's attestation root cerificate, the attestation document itself does not follow the x509 standard and thus we cannot use the HTTPS API of the user's browser. As a result, the user's WebSocket connection to the enclave is flagged as an insecure connection, and automatically blocked if executed on a HTTPS website. As a workaround, we require registry providers to purchase some domain and point it to their registry. Our [code](https://github.com/open-contracts/enclave-protocol/tree/main/ec2_instance/reverse_proxy) automatically obtains a LetsEncrypt TLS certificate, and run a reverse proxy server through which users connect to the registry and oracles.
