@@ -102,6 +102,7 @@ We proceed to dive into the inner workings of the protocol for a more technical 
  └►│ Burner Address  │
    └─────────────────┘
 ```
+#### High level explanation:
 The Oracle and Registry providers are customers of the cloud provider (for now: AWS), who rent an enclave-capable cloud instance from them, install our open-source code and let it participate in the protocol. `Contract.sol` is the Solidty part of the Open Contract, executed on the Ethereum blockchain. `Oracle.py` is the python part (and its dependencies), which is executed by the Oracle enclave and describes the logic by which it requests data from some website, and computes the results. The results are initially submitted to the `Verifier.sol` which checks the validity of the signatures to convince itself that:
 1. a known (=previously registered) registry enclave verified the attestation doc of a correctly setup oracle enclave
 2. the results came from an `oracle.py` script with the right `oracleHash=hash(oracle.py, dependencies)`
@@ -126,12 +127,12 @@ This current design has the disadvantage that if all Registries went offline at 
 
 
 
-## 2. The Oracle Enclave Image 
+## 2. The Oracle Enclave <-> User interaction
 
-The oracle enclave image always exectues the same steps after it is started:
+When the user visits [our](https://github.com/open-contracts/open-contracts.github.io) (or any other) website conforming to our [client protocol](https://github.com/open-contracts/client-protocol), they connect to a registry that registered with the Verifier, and get forwarded by it to the cheapest available oracle enclave. Oracle and Registry providers can freely set their prices per submission. The oracle [enclave image](https://github.com/open-contracts/enclave-protocol/) always exectues the same steps after it is started:
 
  1. It connects to a registry enclave, goes through the attestation process and receives a signature of its public key from the registry and saves it for Step 8.
- 2. It establishes a bi-directional WebSocket connection to a user (who was forwarded by the registry). All communication is encrypted via AES after an RSA key exchange based on the public key inside the attestation document. The enclave exposes a set of remote-procedure calls (RPCs) to the user's fontend, and vice versa.
+ 2. It establishes a bi-directional WebSocket connection to a user (who was forwarded by the registry). All communication is encrypted via AES after an RSA key exchange based on the Oracle's public key inside the attestation document. The enclave exposes a set of remote-procedure calls (RPCs) to the user's fontend, and vice versa.
  3. It asks the user to authenticate by signing random bytes, and lets the user upload an `oracle.py` script along with optional dependencies.
  4. It computes the `oracleHash`, which is the hash of the user-submitted `oracle.py` and its dependencies, and saves for Step 8.
  5. It installs the dependencies and runs the (untrusted) `oracle.py` script in a Python Virtualenv inside a [Firejail Sandbox](https://firejail.wordpress.com/)
@@ -148,14 +149,14 @@ The user now has all they need to submit the results of the computation to the H
 
 ## 3. Core Contracts: Hub, Verifier and Token
 
-Every Open Contract declares (via a Solidity function modifier) which of its Solidity functions can only be called with the results of a particular oracle computation, defined by an `oracle.py` script and its dependencies. It does so by only allowing calls to such a function if they come from the Open Contracts Hub, and informing it to only forward results to an Open Contract function if they came from the right `oracleHash`. These declarations are simplified by inheriting from the `OpenContract` [parent class](https://github.com/open-contracts/ethereum-protocol/blob/main/solidity_contracts/OpenContractOptimism.sol) and calling its `setOracleHash` function, as described in more detail in the docs.
+Every Open Contract declares (via a Solidity function modifier) which of its Solidity functions can only be called with the results of a particular oracle computation, defined by an `oracle.py` script and its dependencies. It does so by only allowing calls to such a function if they come from the Open Contracts Hub, and informing it to only forward results to an Open Contract function if they came from the right `oracleHash`. These declarations are simplified by inheriting from the `OpenContract` [parent class](https://github.com/open-contracts/ethereum-protocol/blob/main/solidity_contracts/OpenContractOptimism.sol) and calling its `setOracleHash` function, as described in more detail in the docs. 
 
-The Hub contract is at the heart of the protocol. It serves multiple roles at once:
- - it keeps track of the public keys of all Registry enclaves
- - it verifies that the `oracleHash` and the results are signed by an Oracle enclave public key which was signed by a known Registry public key
+The [Verifier and Hub contracts](https://github.com/open-contracts/ethereum-protocol) are at the heart of the protocol. They have the following roles:
+ - the Verifier keeps track of the public keys of all known Registry enclaves, each validated by a previous registry. The attestation of the first registry can be verified off-chain before trusting the protocol.
+ - it checks that the `oracleHash` and the results are signed by an Oracle enclave public key which was signed by a known Registry public key
  - it transfers $OPN from the user to the Oracle provider, the Registry provider, and to the [0xdead burner address](https://etherscan.io/address/0x000000000000000000000000000000000000dead)
- - if everything checks out, it forwards the `oracleHash` and the results to the Open Contract, calling the function specified by the user
-
+ - if everything checks out, it forwards the `oracleHash` and the results to the Hub, which forwards it to the respective Open Contract function only if it whitelisted the specific `oracleHash` via the `setOracleHash` function.
+ 
 The [OPN](https://app.uniswap.org/#/swap?inputCurrency=eth&outputCurrency=0xa2d9519A8692De6E47fb9aFCECd67737c288737F&chain=mainnet&exactAmount=.1&exactField=output) token conforms to the regular ERC20 and RC777 token standards. The enforced burning of OPN at every Hub transaction aims to create a deflationary pressure that increases with the overall protocol activity - incentivizing early OPN liquidity on the one hand that is necessary to for enclave providers to cash out on the other hand, who ultimately have to rent out the instances from AWS or Azure. 
 
 ## 4. Compatibility with modern web browsers' security policies
