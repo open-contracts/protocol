@@ -7,10 +7,10 @@ Inside an Open Contract (let's assume FiatSwap for now), the `OpenContract` pare
 
 E.g. inside the `offerTokens` function of FiatSwap, one could call
 ```
-prepayGas{value: msg.value}(selector=this.buyTokens.selector, gasID=offerID, ...gasParams)
+prepayGas(selector=this.buyTokens.selector, gasID=offerID, ...gasParams)
 ```
 which:
- - calls `OpenContractsPaymaster.prepayGas(msg.sender, selector, gasID, ...gasParams)`, where `gasParams` are (which?) parameters OpenGSN requires us to set.
+ - calls `OpenContractsPaymaster.prepayGas{value: msg.value}(msg.sender, selector, gasID, ...gasParams)`, where `gasParams` are (which?) parameters OpenGSN requires us to set.
  - in doing so, transfers enough ETH to the paymaster to pay for gas, and enough OPN to pay the Hub.
 
 FiatSwap would prepay for individual offers, hence set `gasID=offerID`.
@@ -44,5 +44,6 @@ preRelayedCall(request, approvalData, maxGas, ...)
 ```
 
 which needs to:
-- check that enough OPN and ETH were deposited for a given gasID for the given contract function *!! problem: can only trust gasID after the OpenContractsVerifier. Might need to merge paymaster and verifier?*
-- then forwardthe call to the verifier
+- check that enough OPN and ETH were deposited for a given gasID for the given contract function 
+- return flag "rejectOnRecipientRevert"
+- then forward the call to the verifier, in a way that tells it to revert if the gasID wasn't signed
