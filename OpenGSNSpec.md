@@ -54,3 +54,7 @@ which needs to:
 # Updates to Verifier
 
 Literaly just make `oracleMsgHash` depend on gasID
+
+# Updates to Frontend
+
+If gasID is nonzero, switch to OpenGSN ethereum provider
