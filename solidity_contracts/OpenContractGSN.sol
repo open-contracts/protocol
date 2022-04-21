@@ -9,8 +9,8 @@ contract OpenContract {
         hub.setOracleHash(selector, oracleHash);
     }
     
-    function prepayGas(...) internal {
-       paymaster.prepayGas(...);
+    function prepayGas(bytes4 selector, bytes32 gasID) internal {
+       paymaster.prepayGas(selector, gasID);
     }
  
     modifier requiresOracle {
@@ -25,5 +25,5 @@ interface OpenContractsHub {
 }
 
 interface OpenContractsPaymaster {
-    function prepayGas(...) external;
+    function prepayGas(bytes3, bytes32) external;
 }
