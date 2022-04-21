@@ -39,7 +39,7 @@ which:
  - updates `opnBalance[msg.sender][selector][gasID] += opnAmount`
 
 
-Later, OpenGSN will call
+Later, OpenGSN will call:
 
 ```
 preRelayedCall(request, approvalData, maxGas, ...)
@@ -47,7 +47,7 @@ preRelayedCall(request, approvalData, maxGas, ...)
 
 which needs to:
 - check that enough OPN and ETH were deposited for a given gasID for the given contract function 
-- return flag "rejectOnRecipientRevert"
+- return flag "rejectOnRecipientRevert" to allow Verifier to reject invalid gasID
 - then forward the call to the verifier, in a way that tells it to revert if the gasID wasn't signed
 
 
