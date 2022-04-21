@@ -9,7 +9,7 @@ contract OpenContract {
         hub.setOracleHash(selector, oracleHash);
     }
     
-    function prepayGas(bytes4 selector, bytes32 gasID) internal {
+    function prepayGas(bytes4 selector, bytes32 gasID) internal { // any additional gas params?
        paymaster.prepayGas(selector, gasID);
     }
  
