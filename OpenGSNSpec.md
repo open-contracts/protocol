@@ -32,9 +32,9 @@ prepayGas(depositor, selector, gasID, ...gasParams)
 ```
 
 which:
- - updates `ethBalance[msg.sender][gasID] += msg.value`
+ - updates `ethBalance[msg.sender][selector][gasID] += msg.value`
  - grabs the OPN via `OPNToken.transfer(tx.origin, address(this), opnAmount)`, which requires that the frontend asked the depositor to approve their OPN for the paymaster *!!!! EDIT: ppl say tx.origin is insecure. understand more deeply. https://medium.com/coinmonks/solidity-tx-origin-attacks-58211ad95514 *
- - updates `opnBalance[msg.sender][gasID] =+ opnAmount`
+ - updates `opnBalance[msg.sender][selector][gasID] += opnAmount`
 
 
 Later, OpenGSN will call
