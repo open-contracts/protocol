@@ -7,7 +7,7 @@ Inside an Open Contract (let's assume FiatSwap for now), the `OpenContract` pare
 
 E.g. inside the `offerTokens` function of FiatSwap, one could call
 ```
-prepayGas(selector=this.buyTokens.selector, gasID=offerID, ...gasParams)
+prepayGas{value: msg.value}(selector=this.buyTokens.selector, gasID=offerID, ...gasParams)
 ```
 which:
  - calls `OpenContractsPaymaster.prepayGas(msg.sender, selector, gasID, ...gasParams)`, where `gasParams` are (which?) parameters OpenGSN requires us to set.
