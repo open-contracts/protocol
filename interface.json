@@ -3,7 +3,7 @@
   "address": {
     "ropsten": "0x5399a2Feb6220c06c75A04117B5E56C6a399ea11",
     "optimism": "0x0eda229fada048c551cef30a7eaabed98a7f1f46",
-    "arbitrum": "0x0611cfc667129d6e4b49c92c37184262acddafbc"
+    "arbitrum": "0xe83ca210b7800CeC7331de7BEF3EabF8C794c4D1"
   },
   "abi": [
     {
