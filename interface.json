@@ -2,7 +2,8 @@
   "name": "Open Contracts Hub",
   "address": {
     "ropsten": "0x5399a2Feb6220c06c75A04117B5E56C6a399ea11",
-    "optimism": "0xe83ca210b7800cec7331de7bef3eabf8c794c4d1"
+    "optimism": "0xe83ca210b7800cec7331de7bef3eabf8c794c4d1",
+    "arbitrum": "0x35ea44C6808cb0a490a1E849a0305837F281Aa3B"
   },
   "abi": [
     {
