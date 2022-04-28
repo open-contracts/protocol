@@ -2,8 +2,9 @@
   "name": "OPN token",
   "address": {
     "ropsten": "0x6f358829f395B339B7A99D8a857D541524C6E105",
-    "optimism": "0x8dfb2aaB408BC6140c65E1Af0D4Be94DD767d9DA ",
-    "mainnet": "0xa2d9519a8692de6e47fb9afcecd67737c288737f"
+    "optimism": "0x8dfb2aaB408BC6140c65E1Af0D4Be94DD767d9DA",
+    "mainnet": "0xa2d9519a8692de6e47fb9afcecd67737c288737f",
+    "arbitrum": "0x0611cfc667129d6e4b49c92c37184262acddafbc"
   },
   "abi": [
     {
